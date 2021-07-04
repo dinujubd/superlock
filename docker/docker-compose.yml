@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+    api:
+        build: ../src
+        ports:
+            - "8000:80"
+        depends_on:
+            - db
+            - mq
+    db:
+        image: "mariadb:10.4"
+        restart: 'always'
+        volumes: 
+          - "/var/lib/mysql/data"
+          - "/var/lib/mysql/logs"
+          - /var/docker/mariadb/conf:/etc/mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: "sa"
+          MYSQL_DATABASE: "locker"
+          MYSQL_USER: "sa"
+          MYSQL_PASSWORD: "locker"
+    mq:
+        image: "masstransit/rabbitmq"
+        ports:
+            - "5672:5672"
+            - "15672:15672"
