@@ -10,18 +10,21 @@ jobs:
   build:
 
     runs-on: ubuntu-20.04
-
+    env:
+        working-directory: ./src
+      
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Set Work Directory
-      run: cd src
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ${{env.working-directory}}
     - name: Build
       run: dotnet build --no-restore
+      working-directory: ${{env.working-directory}}
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: ${{env.working-directory}}
