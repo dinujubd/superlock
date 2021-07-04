@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
+using MassTransit;
 
 namespace SuperLocker.Core
 {
-    public interface ICommandHandler<T> where T : ICommand
+    public interface ICommandHandler<T>: IConsumer<T> where T : class 
     {
-        Task HandleAsync(T command);
     }
 }

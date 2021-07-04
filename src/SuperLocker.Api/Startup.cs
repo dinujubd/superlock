@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MassTransit;
+using SuperLocker.CommandHandler;
 
 namespace SuperLocker.Api
 {
@@ -19,6 +21,19 @@ namespace SuperLocker.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<LockCommandHandler>();
+
+                x.UsingRabbitMq((context,cfg) =>
+                {
+                    cfg.ConfigureEndpoints(context);
+                });
+            });
+
+            services.AddMassTransitHostedService(true);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperLocker.Api", Version = "v1" });
