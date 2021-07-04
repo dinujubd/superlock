@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.Api", "SuperLoc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.Core", "SuperLocker.Core\SuperLocker.Core.csproj", "{40EF4D3E-4D0E-4CBE-9DCD-86594D552072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.QueryHandlers", "SuperLocker.QueryHandlers\SuperLocker.QueryHandlers.csproj", "{53F7B08C-F8BF-42A7-ADC2-CF392DD6E381}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.CommandHandlers", "SuperLocker.CommandHandlers\SuperLocker.CommandHandlers.csproj", "{5756A4EF-6888-42CC-BFCC-3965939C9F13}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
