@@ -3,20 +3,21 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 using SuperLocker.Core;
 using SuperLocker.Core.Command;
+using SuperLocker.Core.Repositories;
 
 namespace SuperLocker.CommandHandler
 {
     public class LockCommandHandler : ICommandHandler<LockCommand>
     {
-        private readonly ILogger<LockCommand> _logger;
-        public LockCommandHandler(ILogger<LockCommand> logger)
+
+        private readonly ILockRepository _lockRepository;
+        public LockCommandHandler(ILockRepository lockRepository)
         {
-            _logger = logger;   
+            _lockRepository = lockRepository;
         }
-        public Task Consume(ConsumeContext<LockCommand> context)
+        public async Task Consume(ConsumeContext<LockCommand> context)
         {
-            _logger.LogInformation("Received Text: {Text}", context.Message.LockId.ToString());
-            return Task.CompletedTask;
+            await _lockRepository.Lock(context.Message);
         }
     }
 }

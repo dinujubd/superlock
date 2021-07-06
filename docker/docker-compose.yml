@@ -8,8 +8,17 @@ services:
             dockerfile: "SuperLocker.Api/Dockerfile"
         network_mode: "host"
 
+    db:
+        image: mariadb
+        restart: always
+        environment:
+          MYSQL_ROOT_PASSWORD: rpass
+        ports: 
+            - 3306:3306
+
     rabbitmq:
         image: masstransit/rabbitmq:latest
+        restart: always
         ports:
             - "5672:5672"
             - "15672:15672"

@@ -9,6 +9,8 @@ using SuperLocker.CommandHandler;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using SuperLocker.Core.Command;
+using SuperLocker.Core.Repositories;
+using SuperLocker.DataContext.Repositories;
 
 namespace SuperLocker.Api
 {
@@ -25,8 +27,21 @@ namespace SuperLocker.Api
         {
             services.AddControllers().AddFluentValidation();
 
+            
+
+
+//  var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
+
+    // This line uses 'UseSqlServer' in the 'options' parameter
+    // with the connection string defined above.
+
+
+
             services.AddTransient<IValidator<LockCommand>, LockCommandValidator>();
 
+
+            services.AddScoped<ILockRepository, LockRepository>();
+            
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<LockCommandHandler>();

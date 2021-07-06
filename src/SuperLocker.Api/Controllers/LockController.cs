@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using SuperLocker.Api.Models;
 using SuperLocker.Core.Command;
 
 namespace SuperLocker.Api.Controllers
@@ -17,9 +18,9 @@ namespace SuperLocker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Lock(LockCommand command)
+        public async Task<IActionResult> Lock(LockCommadRequest command)
         {
-            await _bus.Publish(command);
+            await _bus.Publish(new LockCommand(command.LockId, command.UserId));
             return Ok();
         }
     }

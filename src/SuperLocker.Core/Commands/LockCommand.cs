@@ -12,5 +12,6 @@ namespace SuperLocker.Core.Command
         }
         public Guid LockId { get; set; }
         public Guid UserId { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }
