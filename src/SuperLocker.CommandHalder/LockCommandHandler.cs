@@ -7,17 +7,17 @@ using SuperLocker.Core.Repositories;
 
 namespace SuperLocker.CommandHandler
 {
-    public class LockCommandHandler : ICommandHandler<LockCommand>
+    public class UnlockCommandHandler : ICommandHandler<UnlockCommand>
     {
 
         private readonly ILockRepository _lockRepository;
-        public LockCommandHandler(ILockRepository lockRepository)
+        public UnlockCommandHandler(ILockRepository lockRepository)
         {
             _lockRepository = lockRepository;
         }
-        public async Task Consume(ConsumeContext<LockCommand> context)
+        public async Task Consume(ConsumeContext<UnlockCommand> context)
         {
-            await _lockRepository.Lock(context.Message);
+            await _lockRepository.Unlock(context.Message);
         }
     }
 }

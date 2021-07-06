@@ -11,6 +11,9 @@ using FluentValidation;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Repositories;
 using SuperLocker.DataContext.Repositories;
+using SuperLocker.Core;
+using SuperLocker.Core.Query;
+using SuperLocker.QueryHandler;
 
 namespace SuperLocker.Api
 {
@@ -27,24 +30,17 @@ namespace SuperLocker.Api
         {
             services.AddControllers().AddFluentValidation();
 
-            
 
-
-//  var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
-
-    // This line uses 'UseSqlServer' in the 'options' parameter
-    // with the connection string defined above.
-
-
-
-            services.AddTransient<IValidator<LockCommand>, LockCommandValidator>();
+            services.AddTransient<IValidator<UnlockCommand>, UnlockCommandValidator>();
 
 
             services.AddScoped<ILockRepository, LockRepository>();
+
+            services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
             
             services.AddMassTransit(x =>
             {
-                x.AddConsumer<LockCommandHandler>();
+                x.AddConsumer<UnlockCommandHandler>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
