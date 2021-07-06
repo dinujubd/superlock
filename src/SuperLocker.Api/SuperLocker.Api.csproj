@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SuperLocker.Core\SuperLocker.Core.csproj" />
     <ProjectReference Include="..\SuperLocker.CommandHalder\SuperLocker.CommandHalder.csproj" />
+    <ProjectReference Include="..\SuperLocker.DataContext\SuperLocker.DataContext.csproj" />
   </ItemGroup>
 
 </Project>
