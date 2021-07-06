@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MassTransit;
 using SuperLocker.CommandHandler;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using SuperLocker.Core.Command;
 
 namespace SuperLocker.Api
 {
@@ -20,13 +23,15 @@ namespace SuperLocker.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
+
+            services.AddTransient<IValidator<LockCommand>, LockCommandValidator>();
 
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<LockCommandHandler>();
 
-                x.UsingRabbitMq((context,cfg) =>
+                x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.ConfigureEndpoints(context);
                 });
