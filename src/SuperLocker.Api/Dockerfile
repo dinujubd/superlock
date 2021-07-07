@@ -10,6 +10,8 @@ WORKDIR /src
 COPY ["SuperLocker.Api/SuperLocker.Api.csproj", "SuperLocker.Api/"]
 COPY ["SuperLocker.CommandHalder/SuperLocker.CommandHalder.csproj", "SuperLocker.CommandHalder/"]
 COPY ["SuperLocker.Core/SuperLocker.Core.csproj", "SuperLocker.Core/"]
+COPY ["SuperLocker.DataContext/SuperLocker.DataContext.csproj", "SuperLocker.DataContext/"]
+COPY ["SuperLocker.QueryHandler/SuperLocker.QueryHandler.csproj", "SuperLocker.QueryHandler/"]
 RUN dotnet restore "SuperLocker.Api/SuperLocker.Api.csproj"
 COPY . .
 WORKDIR "/src/SuperLocker.Api"
