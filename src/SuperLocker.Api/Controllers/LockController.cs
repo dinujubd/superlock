@@ -9,6 +9,7 @@ using SuperLocker.Core.Query;
 namespace SuperLocker.Api.Controllers
 {
     [ApiController]
+    [Route("[Controller]/[Action]")]
     public class LockController : ControllerBase
     {
         private readonly IBus _bus;
@@ -28,8 +29,8 @@ namespace SuperLocker.Api.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> UnlockActivity(UnlockActivityQuery query)
+        [HttpGet]
+        public async Task<IActionResult> UnlockActivity([FromQuery]UnlockActivityQuery query)
         {
             var response = await _queryHandler.ExecuteAsync(query);
             return Ok(response);

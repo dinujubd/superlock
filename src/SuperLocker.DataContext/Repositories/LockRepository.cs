@@ -32,15 +32,15 @@ namespace SuperLocker.DataContext.Repositories
 
             if (user == null) throw new InvalidOperationException("Userd lock has no match");
 
-            var lockInfo = "SELECT unlock_time from AppDBSuperLock.user_locks where user_id = @UserId";
+            var lockInfo = "SELECT unlock_time from AppDBSuperLock.unlock_activity_logs where user_id = @UserId";
 
             var lockResponse = await this._conn.QueryAsync<UnlockTime>(lockInfo, new { UserId = query.UserId.ToString() });
 
             return new UnlockQueryRespose
             {
                 UserId = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FirstName = user.first_name,
+                LastName = user.last_name,
                 LastUnlocked = lockResponse.Select(x => x.unlock_time).ToList()
             };
         }
@@ -124,10 +124,8 @@ namespace SuperLocker.DataContext.Repositories
             }
         }
         public string user_id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
     }
-
-
 
 }
