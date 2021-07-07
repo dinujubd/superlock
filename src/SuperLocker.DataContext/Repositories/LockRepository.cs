@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
+using SuperLocker.DataContext.Providers;
 
 namespace SuperLocker.DataContext.Repositories
 {
@@ -14,18 +15,20 @@ namespace SuperLocker.DataContext.Repositories
     {
         private readonly ILogger<UnlockCommand> _logger;
         private readonly MySqlConnection _conn;
+        private readonly ConnectionPool<MySqlConnection> _connectionPool;
 
-        private string _connectionString = "Server=localhost;Database=AppDBSuperLock;Uid=root;Pwd=rpass;";
-
-        public LockRepository(ILogger<UnlockCommand> logger)
+    
+        public LockRepository(ConnectionPool<MySqlConnection> connectionPool, ILogger<UnlockCommand> logger)
         {
             _logger = logger;
-            _conn = new MySqlConnection(_connectionString);
+            _connectionPool = connectionPool;
+            _conn = connectionPool.Get();
         }
 
 
         public async Task<UnlockQueryRespose> GetUserUnlockActivity(UnlockActivityQuery query)
         {
+            //await Task.Delay(500);
             var userInfo = "SELECT * from AppDBSuperLock.users where user_id = @UserId";
 
             var user = await this._conn.QueryFirstOrDefaultAsync<User>(userInfo, new { UserId = query.UserId });
@@ -35,6 +38,8 @@ namespace SuperLocker.DataContext.Repositories
             var lockInfo = "SELECT unlock_time from AppDBSuperLock.unlock_activity_logs where user_id = @UserId";
 
             var lockResponse = await this._conn.QueryAsync<UnlockTime>(lockInfo, new { UserId = query.UserId.ToString() });
+
+            _connectionPool.Return(_conn);
 
             return new UnlockQueryRespose
             {
@@ -77,7 +82,7 @@ namespace SuperLocker.DataContext.Repositories
 
         public void Dispose()
         {
-            this.Dispose(false);
+            //this.Dispose(false);
         }
 
         protected virtual void Dispose(bool isDisposing)
@@ -110,6 +115,7 @@ namespace SuperLocker.DataContext.Repositories
     {
         public DateTime unlock_time { get; set; }
     }
+
     public class User
     {
         public Guid Id

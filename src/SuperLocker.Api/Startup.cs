@@ -14,6 +14,8 @@ using SuperLocker.DataContext.Repositories;
 using SuperLocker.Core;
 using SuperLocker.Core.Query;
 using SuperLocker.QueryHandler;
+using SuperLocker.DataContext.Providers;
+using MySql.Data.MySqlClient;
 
 namespace SuperLocker.Api
 {
@@ -30,9 +32,16 @@ namespace SuperLocker.Api
         {
             services.AddControllers().AddFluentValidation();
 
-
             services.AddTransient<IValidator<UnlockCommand>, UnlockCommandValidator>();
 
+            services.AddSingleton<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
+            
+            services.AddSingleton<ConnectionPool<MySqlConnection>>(serviceProvider =>
+            {
+                var provider = serviceProvider.GetRequiredService<IDatabaseConnectionProvider<MySqlConnection>>();
+
+                return new ConnectionPool<MySqlConnection>(() => provider.Get());
+            });
 
             services.AddScoped<ILockRepository, LockRepository>();
 
@@ -53,7 +62,7 @@ namespace SuperLocker.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperLocker.Api", Version = "v1" });
-            });
+            });            
         }
 
 
