@@ -18,7 +18,6 @@
     <ProjectReference Include="..\SuperLocker.Core\SuperLocker.Core.csproj" />
     <ProjectReference Include="..\SuperLocker.CommandHalder\SuperLocker.CommandHalder.csproj" />
     <ProjectReference Include="..\SuperLocker.DataContext\SuperLocker.DataContext.csproj" />
-    <ProjectReference Include="..\SuperLocker.QueryHandler\SuperLocker.QueryHandler.csproj" />
   </ItemGroup>
 
 </Project>

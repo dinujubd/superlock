@@ -1,8 +1,8 @@
 using FluentValidation;
 using SuperLocker.Core.Command;
 
-public class UnlockCommandValidator : AbstractValidator<UnlockCommand> {
-	public UnlockCommandValidator() {
+public class LockCommandValidator : AbstractValidator<LockCommand> {
+	public LockCommandValidator() {
 		RuleFor(x => x.LockId).NotNull();
 		RuleFor(x => x.UserId).NotNull();
 	}

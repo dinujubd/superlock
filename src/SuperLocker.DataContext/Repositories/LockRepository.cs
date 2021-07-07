@@ -1,55 +1,26 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using SuperLocker.Core.Command;
-using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
-using SuperLocker.DataContext.Dtos;
-using SuperLocker.DataContext.Providers;
 
 namespace SuperLocker.DataContext.Repositories
 {
     public class LockRepository : ILockRepository
     {
-        private readonly ILogger<UnlockCommand> _logger;
+        private readonly ILogger<LockCommand> _logger;
         private readonly MySqlConnection _conn;
-        private readonly ConnectionPool<MySqlConnection> _connectionPool;
 
-    
-        public LockRepository(ConnectionPool<MySqlConnection> connectionPool, ILogger<UnlockCommand> logger)
+        private string _connectionString = "Server=localhost;Database=AppDBSuperLock;Uid=root;Pwd=rpass;";
+
+        public LockRepository(ILogger<LockCommand> logger)
         {
             _logger = logger;
-            _connectionPool = connectionPool;
-            _conn = connectionPool.Get();
+            _conn = new MySqlConnection(_connectionString);
         }
-
-        public async Task<UnlockQueryRespose> GetUserUnlockActivity(UnlockActivityQuery query)
-        {
-            var userInfo = "SELECT * from AppDBSuperLock.users where user_id = @UserId";
-
-            var user = await this._conn.QueryFirstOrDefaultAsync<User>(userInfo, new { UserId = query.UserId });
-
-            if (user == null) throw new InvalidOperationException("Userd lock has no match");
-
-            var lockInfo = "SELECT unlock_time from AppDBSuperLock.unlock_activity_logs where user_id = @UserId";
-
-            var lockResponse = await this._conn.QueryAsync<UnlockTime>(lockInfo, new { UserId = query.UserId.ToString() });
-
-            _connectionPool.Return(_conn);
-
-            return new UnlockQueryRespose
-            {
-                UserId = user.Id,
-                FirstName = user.first_name,
-                LastName = user.last_name,
-                LastUnlocked = lockResponse.Select(x => x.unlock_time).ToList()
-            };
-        }
-
-        public async Task Unlock(UnlockCommand lockInfo)
+        public async Task Lock(LockCommand lockInfo)
         {
             var sql = "SELECT * from AppDBSuperLock.user_locks where lock_id = @LockId and user_id = @UserId";
 
@@ -63,7 +34,7 @@ namespace SuperLocker.DataContext.Repositories
             await ApplyUnlock(lockInfo);
         }
 
-        private async Task ApplyUnlock(UnlockCommand lockInfo)
+        private async Task ApplyUnlock(LockCommand lockInfo)
         {
             var unlockQuery = @"INSERT into AppDBSuperLock.unlock_activity_logs (unlock_activity_id, lock_id, user_id, unlock_time)
                                 values (@Id, @LockId, @UserId, @UnlockTime);
@@ -76,7 +47,24 @@ namespace SuperLocker.DataContext.Repositories
                 UnlockTime = DateTime.UtcNow
             });
         }
+    }
 
+    public class UserLock
+    {
+        public Guid Id
+        {
+            get
+            {
+                return new Guid(user_lock_id);
+            }
+            private set
+            {
+                Id = value;
+            }
+        }
+        public string user_lock_id { get; set; }
+        public string lock_id { get; set; }
+        public string user_id { get; set; }
     }
 
 }

@@ -2,9 +2,9 @@ using System;
 
 namespace SuperLocker.Core.Command
 {
-    public class UnlockCommand : ICommand
+    public class LockCommand : ICommand
     {
-        public UnlockCommand(Guid lockId, Guid userId)
+        public LockCommand(Guid lockId, Guid userId)
         {
             this.LockId = lockId;
             this.UserId = userId;

@@ -11,11 +11,6 @@ using FluentValidation;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Repositories;
 using SuperLocker.DataContext.Repositories;
-using SuperLocker.Core;
-using SuperLocker.Core.Query;
-using SuperLocker.QueryHandler;
-using SuperLocker.DataContext.Providers;
-using MySql.Data.MySqlClient;
 
 namespace SuperLocker.Api
 {
@@ -32,24 +27,24 @@ namespace SuperLocker.Api
         {
             services.AddControllers().AddFluentValidation();
 
-            services.AddTransient<IValidator<UnlockCommand>, UnlockCommandValidator>();
-
-            services.AddSingleton<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
             
-            services.AddSingleton<ConnectionPool<MySqlConnection>>(serviceProvider =>
-            {
-                var provider = serviceProvider.GetRequiredService<IDatabaseConnectionProvider<MySqlConnection>>();
 
-                return new ConnectionPool<MySqlConnection>(() => provider.Get());
-            });
+
+//  var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
+
+    // This line uses 'UseSqlServer' in the 'options' parameter
+    // with the connection string defined above.
+
+
+
+            services.AddTransient<IValidator<LockCommand>, LockCommandValidator>();
+
 
             services.AddScoped<ILockRepository, LockRepository>();
-
-            services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
             
             services.AddMassTransit(x =>
             {
-                x.AddConsumer<UnlockCommandHandler>();
+                x.AddConsumer<LockCommandHandler>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -62,7 +57,7 @@ namespace SuperLocker.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperLocker.Api", Version = "v1" });
-            });            
+            });
         }
 
 
