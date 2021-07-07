@@ -7,11 +7,12 @@ using MySql.Data.MySqlClient;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
+using SuperLocker.DataContext.Dtos;
 using SuperLocker.DataContext.Providers;
 
 namespace SuperLocker.DataContext.Repositories
 {
-    public class LockRepository : ILockRepository, IDisposable
+    public class LockRepository : ILockRepository
     {
         private readonly ILogger<UnlockCommand> _logger;
         private readonly MySqlConnection _conn;
@@ -25,10 +26,8 @@ namespace SuperLocker.DataContext.Repositories
             _conn = connectionPool.Get();
         }
 
-
         public async Task<UnlockQueryRespose> GetUserUnlockActivity(UnlockActivityQuery query)
         {
-            //await Task.Delay(500);
             var userInfo = "SELECT * from AppDBSuperLock.users where user_id = @UserId";
 
             var user = await this._conn.QueryFirstOrDefaultAsync<User>(userInfo, new { UserId = query.UserId });
@@ -78,60 +77,6 @@ namespace SuperLocker.DataContext.Repositories
             });
         }
 
-
-
-        public void Dispose()
-        {
-            //this.Dispose(false);
-        }
-
-        protected virtual void Dispose(bool isDisposing)
-        {
-            if (!isDisposing)
-                _conn.Close();
-        }
-    }
-
-    public class UserLock
-    {
-        public Guid Id
-        {
-            get
-            {
-                return new Guid(user_lock_id);
-            }
-            private set
-            {
-                Id = value;
-            }
-        }
-        public string user_lock_id { get; set; }
-        public string lock_id { get; set; }
-        public string user_id { get; set; }
-    }
-
-
-    public class UnlockTime
-    {
-        public DateTime unlock_time { get; set; }
-    }
-
-    public class User
-    {
-        public Guid Id
-        {
-            get
-            {
-                return new Guid(user_id);
-            }
-            private set
-            {
-                Id = value;
-            }
-        }
-        public string user_id { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
     }
 
 }
