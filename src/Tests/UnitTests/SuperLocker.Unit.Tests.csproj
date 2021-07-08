@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperLocker.Core\SuperLocker.Core.csproj" />
+    <ProjectReference Include="..\..\SuperLocker.Api\SuperLocker.Api.csproj" />
+    <ProjectReference Include="..\..\SuperLocker.Core\SuperLocker.Core.csproj" />
   </ItemGroup>
 
 </Project>

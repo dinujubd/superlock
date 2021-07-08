@@ -1,12 +1,12 @@
 version: "3.6"
 
 services:
-    # api:
-    #     image: api
-    #     build:
-    #         context: ../src
-    #         dockerfile: "SuperLocker.Api/Dockerfile"
-    #     network_mode: "host"
+    api:
+        image: api
+        build:
+            context: ../src
+            dockerfile: "SuperLocker.Api/Dockerfile"
+        network_mode: "host"
 
     db:
         image: mariadb
