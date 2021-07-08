@@ -57,10 +57,10 @@ jobs:
     - name: Fire Docker
       run: docker-compose up -d
       working-directory: ${{env.working-directory}}
+    - name: Sleep for 30 seconds
       uses: jakejarvis/wait-action@master
-        with:
-        time: '60s'
-        - name: Check running containers 
+      with:
+        time: '30s' 
     - name: Test
       run: dotnet test
       working-directory: ${{env.test-directory}}
@@ -77,10 +77,10 @@ jobs:
     - name: Fire Docker
       run: docker-compnse up
       working-directory: ${{env.working-directory}}
+    - name: Sleep for 30 seconds
       uses: jakejarvis/wait-action@master
-        with:
-        time: '60s'
-        - name: Check running containers  
+      with:
+        time: '30s'  
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
