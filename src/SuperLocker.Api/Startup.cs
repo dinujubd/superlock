@@ -1,21 +1,22 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MassTransit;
-using SuperLocker.CommandHandler;
-using FluentValidation.AspNetCore;
-using FluentValidation;
-using SuperLocker.Core.Command;
-using SuperLocker.Core.Repositories;
-using SuperLocker.DataContext.Repositories;
-using SuperLocker.Core;
-using SuperLocker.Core.Query;
-using SuperLocker.QueryHandler;
-using SuperLocker.DataContext.Providers;
 using MySql.Data.MySqlClient;
+using SuperLocker.CommandHandler;
+using SuperLocker.Core;
+using SuperLocker.Core.Command;
+using SuperLocker.Core.Query;
+using SuperLocker.Core.Repositories;
+using SuperLocker.DataContext.Adapters;
+using SuperLocker.DataContext.Providers;
+using SuperLocker.DataContext.Repositories;
+using SuperLocker.QueryHandler;
 
 namespace SuperLocker.Api
 {
@@ -35,7 +36,7 @@ namespace SuperLocker.Api
             services.AddTransient<IValidator<UnlockCommand>, UnlockCommandValidator>();
 
             services.AddSingleton<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
-            
+
             services.AddSingleton<ConnectionPool<MySqlConnection>>(serviceProvider =>
             {
                 var provider = serviceProvider.GetRequiredService<IDatabaseConnectionProvider<MySqlConnection>>();
@@ -46,7 +47,15 @@ namespace SuperLocker.Api
             services.AddScoped<ILockRepository, LockRepository>();
 
             services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
-            
+
+            services.AddSingleton<ICacheAdapter, MySqlCacheAdapter>();
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetValue<string>("Redis:Endpoint");
+                options.InstanceName = Configuration.GetValue<string>("Redis:Instance");
+            });
+
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<UnlockCommandHandler>();
@@ -62,7 +71,7 @@ namespace SuperLocker.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperLocker.Api", Version = "v1" });
-            });            
+            });
         }
 
 
