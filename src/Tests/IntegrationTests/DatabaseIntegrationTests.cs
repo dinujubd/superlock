@@ -50,6 +50,8 @@ namespace SuperLocker.Intgration.Tests
                 tables.Add(reader[0].ToString());
             }
 
+            expectedTables.Sort();
+            tables.Sort();
 
             Assert.Equal(expectedTables, tables);
         }

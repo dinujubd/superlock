@@ -75,7 +75,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Fire Docker
-      run: docker-compnse up
+      run: docker-compose up
       working-directory: ${{env.working-directory}}
     - name: Sleep for 30 seconds
       uses: jakejarvis/wait-action@master
