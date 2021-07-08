@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-20.04
     env:
         working-directory: ./src
@@ -29,7 +30,7 @@ jobs:
     name: Unit Test
     runs-on: ubuntu-20.04
     env:
-        working-directory: ./Tests/UnitTests
+        working-directory: ./src/Tests/UnitTests
       
     steps:
     - uses: actions/checkout@v2
@@ -45,11 +46,11 @@ jobs:
       working-directory: ${{env.working-directory}}
   
   IntegrationTest:
-    name: Functional Test
+    name: Integration Test
     runs-on: ubuntu-20.04
     env:
         working-directory: ./docker
-        test-directory: ./src/Tests/IntegrationTest
+        test-directory: ./src/Tests/IntegrationTests
       
     steps:
     - name: Fire Docker
@@ -60,11 +61,11 @@ jobs:
       working-directory: ${{env.test-directory}}
       
   FunnctionalTest:
-    name: Unit Test
+    name: Functional Test
     runs-on: ubuntu-20.04
     env:
         working-directory: ./src
-        test-directory: ./Tests/IntegrationTest
+        test-directory: ./src/Tests/FunctionalTests
       
     steps:
     - name: Fire Docker
