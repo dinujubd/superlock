@@ -8,11 +8,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MySql.Data.MySqlClient;
+using StackExchange.Redis.Extensions.Core.Abstractions;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis.Extensions.Newtonsoft;
+using SuperLocker.Api.Models;
+using SuperLocker.Api.Validators;
 using SuperLocker.CommandHandler;
 using SuperLocker.Core;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
+using SuperLocker.Core.Validators.Command;
 using SuperLocker.DataContext.Adapters;
 using SuperLocker.DataContext.Providers;
 using SuperLocker.DataContext.Repositories;
@@ -33,29 +39,31 @@ namespace SuperLocker.Api
         {
             services.AddControllers().AddFluentValidation();
 
-            services.AddTransient<IValidator<UnlockCommand>, UnlockCommandValidator>();
+            services.AddScoped<IValidator<UnlockCommand>, UnlockCommandValidator>();
+            services.AddScoped<IValidator<UnlockRequest>, UnlockRequestValidator>();
 
-            services.AddSingleton<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
+            services.AddScoped<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
 
-            services.AddSingleton<ConnectionPool<MySqlConnection>>(serviceProvider =>
+            services.AddScoped(serviceProvider =>
             {
                 var provider = serviceProvider.GetRequiredService<IDatabaseConnectionProvider<MySqlConnection>>();
 
                 return new ConnectionPool<MySqlConnection>(() => provider.Get());
             });
 
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILockRepository, LockRepository>();
 
             services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
 
-            services.AddSingleton<ICacheAdapter, MySqlCacheAdapter>();
+            services.AddScoped<ICacheAdapter, MySqlCacheAdapter>();
 
-            services.AddStackExchangeRedisCache(options =>
+            services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>((options) =>
             {
-                options.Configuration = Configuration.GetValue<string>("Redis:Endpoint");
-                options.InstanceName = Configuration.GetValue<string>("Redis:Instance");
+                return Configuration.GetSection("Redis").Get<RedisConfiguration>();
             });
 
+   
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<UnlockCommandHandler>();
