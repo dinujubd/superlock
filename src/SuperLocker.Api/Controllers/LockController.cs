@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using SuperLocker.Api.Models;
 using SuperLocker.Core;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Query;
+using System.Threading.Tasks;
 
 namespace SuperLocker.Api.Controllers
 {
@@ -22,15 +22,15 @@ namespace SuperLocker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Unlock(LockCommadRequest command)
+        public async Task<IActionResult> Unlock(UnlockRequest request)
         {
-            await _bus.Publish(new UnlockCommand(command.LockId, command.UserId));
+            await _bus.Publish(new UnlockCommand(request.LockId, request.UserId));
             return Ok();
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> UnlockActivity([FromQuery]UnlockActivityQuery query)
+        public async Task<IActionResult> UnlockActivity([FromQuery] UnlockActivityQuery query)
         {
             var response = await _queryHandler.ExecuteAsync(query);
             return Ok(response);

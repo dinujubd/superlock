@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31423.177
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Api", "SuperLocker.Api\SuperLocker.Api.csproj", "{7AD977A8-5CEB-44D9-B6F9-0F29313C1DEE}"
 EndProject
@@ -14,6 +14,22 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.QueryHandler", "SuperLocker.QueryHandler\SuperLocker.QueryHandler.csproj", "{213AC282-AAE3-411D-A8F8-3F88131A5447}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Auth", "SuperLocker.Auth\SuperLocker.Auth.csproj", "{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Crosscuts", "SuperLocker.Crosscuts\SuperLocker.Crosscuts.csproj", "{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{097BB8A7-2806-4B45-B745-262ED72F31C2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Core.Tests", "SuperLocker.Core.Tests\SuperLocker.Core.Tests.csproj", "{6B1FBC01-754D-4D6C-A329-5D36F53AD798}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Api.Tests", "SuperLocker.Api.Tests\SuperLocker.Api.Tests.csproj", "{2E23EA97-4F64-4A03-8684-69097A14A6BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{4BF26A86-2270-461F-A9E6-6A4DF48CCA69}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Intgration.Tests", "SuperLocker.Intgration.Tests\SuperLocker.Intgration.Tests.csproj", "{8D4E99EE-289B-417C-A23B-8C475480E658}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FunctionaTests", "FunctionaTests", "{DDDE1B86-B5FF-456B-8737-A6CD9F482AFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.Functional.Tests", "SuperLocker.Functional.Tests\SuperLocker.Functional.Tests.csproj", "{FDBC0CE2-6182-4F5A-A229-D0F31A178F8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +61,37 @@ Global
 		{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1FBC01-754D-4D6C-A329-5D36F53AD798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1FBC01-754D-4D6C-A329-5D36F53AD798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1FBC01-754D-4D6C-A329-5D36F53AD798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1FBC01-754D-4D6C-A329-5D36F53AD798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E23EA97-4F64-4A03-8684-69097A14A6BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E23EA97-4F64-4A03-8684-69097A14A6BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E23EA97-4F64-4A03-8684-69097A14A6BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E23EA97-4F64-4A03-8684-69097A14A6BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D4E99EE-289B-417C-A23B-8C475480E658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D4E99EE-289B-417C-A23B-8C475480E658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D4E99EE-289B-417C-A23B-8C475480E658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D4E99EE-289B-417C-A23B-8C475480E658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDBC0CE2-6182-4F5A-A229-D0F31A178F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDBC0CE2-6182-4F5A-A229-D0F31A178F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDBC0CE2-6182-4F5A-A229-D0F31A178F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDBC0CE2-6182-4F5A-A229-D0F31A178F8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6B1FBC01-754D-4D6C-A329-5D36F53AD798} = {097BB8A7-2806-4B45-B745-262ED72F31C2}
+		{2E23EA97-4F64-4A03-8684-69097A14A6BA} = {097BB8A7-2806-4B45-B745-262ED72F31C2}
+		{4BF26A86-2270-461F-A9E6-6A4DF48CCA69} = {097BB8A7-2806-4B45-B745-262ED72F31C2}
+		{8D4E99EE-289B-417C-A23B-8C475480E658} = {4BF26A86-2270-461F-A9E6-6A4DF48CCA69}
+		{DDDE1B86-B5FF-456B-8737-A6CD9F482AFF} = {097BB8A7-2806-4B45-B745-262ED72F31C2}
+		{FDBC0CE2-6182-4F5A-A229-D0F31A178F8A} = {DDDE1B86-B5FF-456B-8737-A6CD9F482AFF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03A79C18-C87E-4D03-81C5-A7FC85513740}

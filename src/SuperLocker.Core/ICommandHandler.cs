@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-using MassTransit;
+﻿using MassTransit;
 
 namespace SuperLocker.Core
 {
-    public interface ICommandHandler<T>: IConsumer<T> where T : class 
+    public interface ICommandHandler<T> : IConsumer<T> where T : class
     {
     }
 }

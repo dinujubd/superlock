@@ -1,6 +1,6 @@
 using System;
 
-namespace SuperLocker.DataContext.Dtos
+namespace SuperLocker.Core.Dtos
 {
     public class UnlockTime
     {

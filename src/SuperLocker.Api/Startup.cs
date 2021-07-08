@@ -1,21 +1,28 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MassTransit;
-using SuperLocker.CommandHandler;
-using FluentValidation.AspNetCore;
-using FluentValidation;
-using SuperLocker.Core.Command;
-using SuperLocker.Core.Repositories;
-using SuperLocker.DataContext.Repositories;
-using SuperLocker.Core;
-using SuperLocker.Core.Query;
-using SuperLocker.QueryHandler;
-using SuperLocker.DataContext.Providers;
 using MySql.Data.MySqlClient;
+using StackExchange.Redis.Extensions.Core.Abstractions;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis.Extensions.Newtonsoft;
+using SuperLocker.Api.Models;
+using SuperLocker.Api.Validators;
+using SuperLocker.CommandHandler;
+using SuperLocker.Core;
+using SuperLocker.Core.Command;
+using SuperLocker.Core.Query;
+using SuperLocker.Core.Repositories;
+using SuperLocker.Core.Validators.Command;
+using SuperLocker.DataContext.Adapters;
+using SuperLocker.DataContext.Providers;
+using SuperLocker.DataContext.Repositories;
+using SuperLocker.QueryHandler;
 
 namespace SuperLocker.Api
 {
@@ -32,21 +39,31 @@ namespace SuperLocker.Api
         {
             services.AddControllers().AddFluentValidation();
 
-            services.AddTransient<IValidator<UnlockCommand>, UnlockCommandValidator>();
+            services.AddScoped<IValidator<UnlockCommand>, UnlockCommandValidator>();
+            services.AddScoped<IValidator<UnlockRequest>, UnlockRequestValidator>();
 
-            services.AddSingleton<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
-            
-            services.AddSingleton<ConnectionPool<MySqlConnection>>(serviceProvider =>
+            services.AddScoped<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
+
+            services.AddScoped(serviceProvider =>
             {
                 var provider = serviceProvider.GetRequiredService<IDatabaseConnectionProvider<MySqlConnection>>();
 
                 return new ConnectionPool<MySqlConnection>(() => provider.Get());
             });
 
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILockRepository, LockRepository>();
 
             services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
-            
+
+            services.AddScoped<ICacheAdapter, MySqlCacheAdapter>();
+
+            services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>((options) =>
+            {
+                return Configuration.GetSection("Redis").Get<RedisConfiguration>();
+            });
+
+   
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<UnlockCommandHandler>();
@@ -62,7 +79,7 @@ namespace SuperLocker.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperLocker.Api", Version = "v1" });
-            });            
+            });
         }
 
 
