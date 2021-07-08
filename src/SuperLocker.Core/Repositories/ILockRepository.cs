@@ -1,5 +1,7 @@
 using SuperLocker.Core.Command;
+using SuperLocker.Core.Dtos;
 using SuperLocker.Core.Query;
+using System;
 using System.Threading.Tasks;
 
 namespace SuperLocker.Core.Repositories
@@ -7,6 +9,7 @@ namespace SuperLocker.Core.Repositories
     public interface ILockRepository
     {
         Task Unlock(UnlockCommand lockInfo);
-        Task<UnlockQueryRespose> GetUserUnlockActivity(UnlockActivityQuery query);
+        Task<Lock> GetLockAsync(Guid lockId);
+        Task<UserLock> GetUserLockAsync(Guid userId, Guid lockId);
     }
 }
