@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31423.177
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.Api", "SuperLocker.Api\SuperLocker.Api.csproj", "{7AD977A8-5CEB-44D9-B6F9-0F29313C1DEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Api", "SuperLocker.Api\SuperLocker.Api.csproj", "{7AD977A8-5CEB-44D9-B6F9-0F29313C1DEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.Core", "SuperLocker.Core\SuperLocker.Core.csproj", "{40EF4D3E-4D0E-4CBE-9DCD-86594D552072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Core", "SuperLocker.Core\SuperLocker.Core.csproj", "{40EF4D3E-4D0E-4CBE-9DCD-86594D552072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.CommandHalder", "SuperLocker.CommandHalder\SuperLocker.CommandHalder.csproj", "{BE2B7B59-3C1A-426B-9807-F8665C248B9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.CommandHalder", "SuperLocker.CommandHalder\SuperLocker.CommandHalder.csproj", "{BE2B7B59-3C1A-426B-9807-F8665C248B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.DataContext", "SuperLocker.DataContext\SuperLocker.DataContext.csproj", "{654C3337-60D3-42C1-9AA2-20FA4B246110}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.DataContext", "SuperLocker.DataContext\SuperLocker.DataContext.csproj", "{654C3337-60D3-42C1-9AA2-20FA4B246110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.QueryHandler", "SuperLocker.QueryHandler\SuperLocker.QueryHandler.csproj", "{213AC282-AAE3-411D-A8F8-3F88131A5447}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.QueryHandler", "SuperLocker.QueryHandler\SuperLocker.QueryHandler.csproj", "{213AC282-AAE3-411D-A8F8-3F88131A5447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.Auth", "SuperLocker.Auth\SuperLocker.Auth.csproj", "{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperLocker.Auth", "SuperLocker.Auth\SuperLocker.Auth.csproj", "{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLocker.Crosscuts", "SuperLocker.Crosscuts\SuperLocker.Crosscuts.csproj", "{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +31,6 @@ Global
 		{40EF4D3E-4D0E-4CBE-9DCD-86594D552072}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40EF4D3E-4D0E-4CBE-9DCD-86594D552072}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40EF4D3E-4D0E-4CBE-9DCD-86594D552072}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53F7B08C-F8BF-42A7-ADC2-CF392DD6E381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53F7B08C-F8BF-42A7-ADC2-CF392DD6E381}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53F7B08C-F8BF-42A7-ADC2-CF392DD6E381}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53F7B08C-F8BF-42A7-ADC2-CF392DD6E381}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5756A4EF-6888-42CC-BFCC-3965939C9F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5756A4EF-6888-42CC-BFCC-3965939C9F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5756A4EF-6888-42CC-BFCC-3965939C9F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5756A4EF-6888-42CC-BFCC-3965939C9F13}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE2B7B59-3C1A-426B-9807-F8665C248B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BE2B7B59-3C1A-426B-9807-F8665C248B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE2B7B59-3C1A-426B-9807-F8665C248B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +47,10 @@ Global
 		{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9150C28D-B9DB-48EA-BFC0-B7BEA9D4331B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8DB5E1B-5E8E-48E3-B6E8-FED44A66F71E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
