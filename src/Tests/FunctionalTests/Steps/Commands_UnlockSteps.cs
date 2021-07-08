@@ -44,7 +44,7 @@ namespace SuperLocker.Functional.Tests.Steps
                 new KeyValuePair<string, string>("lockId", _unlockRequest.LockId.ToString())
             });
 
-            var result = await client.PostAsync("https://localhost:5001/lock/unlock",
+            var result = await client.PostAsync("http://localhost:5000/lock/unlock",
                 new StringContent(JsonConvert.SerializeObject(_unlockRequest)
                 , Encoding.UTF8,"application/json"));
 
