@@ -22,9 +22,9 @@ namespace SuperLocker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Unlock(LockCommadRequest command)
+        public async Task<IActionResult> Unlock(UnlockRequest request)
         {
-            await _bus.Publish(new UnlockCommand(command.LockId, command.UserId));
+            await _bus.Publish(new UnlockCommand(request.LockId, request.UserId));
             return Ok();
         }
 
