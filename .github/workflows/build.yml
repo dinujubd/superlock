@@ -1,4 +1,4 @@
-name: .NET
+name: Super Locker
 
 on:
   push:
@@ -53,9 +53,14 @@ jobs:
         test-directory: ./src/Tests/IntegrationTests
       
     steps:
+    - uses: actions/checkout@v2
     - name: Fire Docker
-      run: docker-compnse up
+      run: docker-compose up -d
       working-directory: ${{env.working-directory}}
+      uses: jakejarvis/wait-action@master
+        with:
+        time: '60s'
+        - name: Check running containers 
     - name: Test
       run: dotnet test
       working-directory: ${{env.test-directory}}
@@ -68,10 +73,14 @@ jobs:
         test-directory: ./src/Tests/FunctionalTests
       
     steps:
+    - uses: actions/checkout@v2
     - name: Fire Docker
       run: docker-compnse up
       working-directory: ${{env.working-directory}}
-    - uses: actions/checkout@v2
+      uses: jakejarvis/wait-action@master
+        with:
+        time: '60s'
+        - name: Check running containers  
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
