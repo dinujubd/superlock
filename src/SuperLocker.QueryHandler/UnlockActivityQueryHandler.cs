@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using SuperLocker.Core;
+﻿using SuperLocker.Core;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
+using System.Threading.Tasks;
 
 namespace SuperLocker.QueryHandler
 {

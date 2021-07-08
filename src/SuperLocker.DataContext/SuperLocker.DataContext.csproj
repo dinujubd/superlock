@@ -2,10 +2,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SuperLocker.Core\SuperLocker.Core.csproj" />
+    <ProjectReference Include="..\SuperLocker.Crosscuts\SuperLocker.Crosscuts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="dapper" Version="2.0.90" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
     <PackageReference Include="MySql.Data" Version="8.0.25" />
   </ItemGroup>
 

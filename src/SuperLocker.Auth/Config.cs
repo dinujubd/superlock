@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Security.Claims;
 using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace SuperLocker.Auth
 {
@@ -68,7 +68,7 @@ namespace SuperLocker.Auth
     }
 
 
-    public class ProfileWithRoleIdentityResource: IdentityResources.Profile
+    public class ProfileWithRoleIdentityResource : IdentityResources.Profile
     {
         public ProfileWithRoleIdentityResource()
         {

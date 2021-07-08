@@ -1,8 +1,4 @@
 using System;
-using System.Threading.Tasks;
-using MassTransit;
-using Microsoft.AspNetCore.Mvc;
-using SuperLocker.Core.Command;
 
 namespace SuperLocker.Api.Models
 {

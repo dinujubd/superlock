@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 namespace SuperLocker.DataContext.Providers
 {
-    public class ConnectionPool<T> where T: IDisposable
+    public class ConnectionPool<T> where T : IDisposable
     {
         private readonly ConcurrentQueue<T> _objects;
         private readonly Func<T> _objectGenerator;
@@ -32,9 +32,13 @@ namespace SuperLocker.DataContext.Providers
         public void Return(T item)
         {
             if (_objects.Count < MAX_CONNECTIONS)
-               _objects.Enqueue(item);
+            {
+                _objects.Enqueue(item);
+            }
             else
+            {
                 item.Dispose();
+            }
         }
     }
 

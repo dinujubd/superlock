@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Query;
+using System.Threading.Tasks;
 
 namespace SuperLocker.Core.Repositories
 {

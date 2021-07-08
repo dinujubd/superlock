@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
+using System.Threading.Tasks;
 
 namespace SuperLocker.Auth
 {
@@ -8,12 +8,12 @@ namespace SuperLocker.Auth
     {
         public Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-           context.IssuedClaims.AddRange(context.Subject.Claims);
-           
-           return Task.CompletedTask;
+            context.IssuedClaims.AddRange(context.Subject.Claims);
+
+            return Task.CompletedTask;
         }
 
-        public  Task IsActiveAsync(IsActiveContext context)
+        public Task IsActiveAsync(IsActiveContext context)
         {
             return Task.CompletedTask;
         }

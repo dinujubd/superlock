@@ -1,9 +1,8 @@
-using System.Threading.Tasks;
 using MassTransit;
-using Microsoft.Extensions.Logging;
 using SuperLocker.Core;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Repositories;
+using System.Threading.Tasks;
 
 namespace SuperLocker.CommandHandler
 {
