@@ -69,7 +69,7 @@ jobs:
     name: Functional Test
     runs-on: ubuntu-20.04
     env:
-        working-directory: ./src
+        working-directory: ./docker
         test-directory: ./src/Tests/FunctionalTests
       
     steps:
