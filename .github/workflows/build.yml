@@ -1,4 +1,4 @@
-name: .NET
+name: Super Locker
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-20.04
     env:
         working-directory: ./src
@@ -25,6 +25,69 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: ${{env.working-directory}}
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+   
+  UnitTest:
+    name: Unit Test
+    runs-on: ubuntu-20.04
+    env:
+        working-directory: ./src/Tests/UnitTests
+      
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
       working-directory: ${{env.working-directory}}
+    - name: Test
+      run: dotnet test
+      working-directory: ${{env.working-directory}}
+  
+  IntegrationTest:
+    name: Integration Test
+    runs-on: ubuntu-20.04
+    env:
+        working-directory: ./docker
+        test-directory: ./src/Tests/IntegrationTests
+      
+    steps:
+    - uses: actions/checkout@v2
+    - name: Fire Docker
+      run: docker-compose up -d
+      working-directory: ${{env.working-directory}}
+    - name: Sleep for 30 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s' 
+    - name: Test
+      run: dotnet test
+      working-directory: ${{env.test-directory}}
+      
+  FunnctionalTest:
+    name: Functional Test
+    runs-on: ubuntu-20.04
+    env:
+        working-directory: ./docker
+        test-directory: ./src/Tests/FunctionalTests
+      
+    steps:
+    - uses: actions/checkout@v2
+    - name: Fire Docker
+      run: docker-compose up -d
+      working-directory: ${{env.working-directory}}
+    - name: Sleep for 30 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'  
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ${{env.test-directory}}
+    - name: Test
+      run: dotnet test
+      working-directory: ${{env.test-directory}}

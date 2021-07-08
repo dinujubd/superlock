@@ -68,10 +68,10 @@ namespace SuperLocker.Api
             {
                 x.AddConsumer<UnlockCommandHandler>();
 
-                x.UsingRabbitMq((context, cfg) =>
+                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
                 {
-                    cfg.ConfigureEndpoints(context);
-                });
+                    cfg.Host("rabbitmq://rabbitmq");
+                }));
             });
 
             services.AddMassTransitHostedService(true);
