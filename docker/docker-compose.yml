@@ -6,6 +6,11 @@ services:
         build:
             context: ../src
             dockerfile: "SuperLocker.Api/Dockerfile"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=secret#lock123
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/super_lock.pfx
         ports: 
             - "5000:80"
             - "5001:443"
@@ -17,7 +22,26 @@ services:
             - rabbitmq
             - db
             - redis
-
+    auth:
+        image: auth
+        build:
+            context: ../src
+            dockerfile: "SuperLocker.Auth/Dockerfile"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=secret#lock123
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/super_lock.pfx
+        ports: 
+            - "5002:80"
+            - "5003:443"
+        depends_on: 
+            - db
+        links: 
+            - db
+        volumes: 
+            - ./auth_cert:/https/
+            
     db:
         image: mariadb
         hostname: db
@@ -25,6 +49,8 @@ services:
           MYSQL_ROOT_PASSWORD: rpass
         ports: 
             - 3306:3306
+        volumes: 
+            - ./init:/docker-entrypoint-initdb.d
     
     redis:
         image: redis
@@ -32,6 +58,8 @@ services:
         container_name: cache
         expose:
             - 6379
+        ports: 
+            - "6379:6379"
         volumes:
             - ./init:/docker-entrypoint-initdb.d
 
