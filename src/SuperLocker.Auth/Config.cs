@@ -31,34 +31,11 @@ namespace SuperLocker.Auth
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "api1", "openid", "profile", "email"}
+                    AllowedScopes = { "api1", "openid", "profile", "email"},
                 }
             };
 
-        public static List<TestUser> TestUsers =>
-            new List<TestUser> {
-                new TestUser {
-                    SubjectId = "user_1",
-                    Username = "alice",
-                    Password = "alice",
-                    Claims = new List<Claim> {
-                        new Claim("firstname", "Alice"),
-                        new Claim("lastname", "Bobo"),
-                        new Claim(JwtClaimTypes.Role, "admin"),
-                    }
-                },
-                new TestUser {
-                    SubjectId = "user_1",
-                    Username = "bob",
-                    Password = "bob",
-                    Claims = new List<Claim> {
-                        new Claim("firstname", "Alice"),
-                        new Claim("lastname", "Bobo"),
-                        new Claim(JwtClaimTypes.Role, "user"),
-                    }
-                }
-            };
-
+      
         public static IEnumerable<IdentityResource> Resouces =>
             new List<IdentityResource> {
                 new IdentityResources.OpenId(),
