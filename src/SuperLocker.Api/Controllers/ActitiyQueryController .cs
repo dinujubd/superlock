@@ -1,35 +1,25 @@
-using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SuperLocker.Api.Models;
 using SuperLocker.Core;
-using SuperLocker.Core.Command;
 using SuperLocker.Core.Query;
 using System.Threading.Tasks;
 
 namespace SuperLocker.Api.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin,appuser")]
     [ApiController]
     [Route("[Controller]/[Action]")]
-    public class LockController : ControllerBase
+    public class ActitiyQueryController : ControllerBase
     {
-        private readonly IBus _bus;
+     
         private readonly IQueryHandler<UnlockActivityQuery, UnlockQueryRespose> _queryHandler;
         private readonly AppUser _user;
 
-        public LockController(IBus bus, IQueryHandler<UnlockActivityQuery, UnlockQueryRespose> queryHandler, AppUser user)
+        public ActitiyQueryController(IQueryHandler<UnlockActivityQuery, UnlockQueryRespose> queryHandler, AppUser user)
         {
-            _bus = bus;
             _user = user;
             this._queryHandler = queryHandler;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Unlock(UnlockRequest request)
-        {
-            await _bus.Publish(new UnlockCommand(request.LockId, _user.UserId));
-            return Ok();
         }
 
 
@@ -37,7 +27,7 @@ namespace SuperLocker.Api.Controllers
         public async Task<IActionResult> UnlockActivity()
         {
             var response = await _queryHandler.ExecuteAsync(new UnlockActivityQuery { UserId = _user.UserId });
-            return Ok(response);
+            return response.IsValid ? Ok(response) : BadRequest(response);
         }
     }
 

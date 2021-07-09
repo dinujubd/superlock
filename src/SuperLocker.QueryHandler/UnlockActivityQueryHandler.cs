@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 using SuperLocker.Core;
+using SuperLocker.Core.Models;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SuperLocker.QueryHandler
@@ -18,23 +20,31 @@ namespace SuperLocker.QueryHandler
             _validator = validator;
             _logger = logger;
         }
-        public async Task<UnlockQueryRespose> ExecuteAsync(UnlockActivityQuery query)
+        public async Task<QueryResponse<UnlockQueryRespose>> ExecuteAsync(UnlockActivityQuery query)
         {
             try
             {
                 var validationResult = await _validator.ValidateAsync(query);
                 if (!validationResult.IsValid)
                 {
+
                     validationResult.Errors.ForEach(x =>
                     {
                         _logger.LogError("ACTIVITY.VALIDATION.ERROR {0} ->", x.ErrorMessage);
+                       
                     });
 
-                    return null;
+                    return new QueryResponse<UnlockQueryRespose> { 
+                        Errors = new List<string> { "Invalid Request" }
+                    };
                 }
                 else
                 {
-                    return await _userRepository.GetUserUnlockActivity(query);
+                    var activities =  await _userRepository.GetUserUnlockActivity(query);
+                    return new QueryResponse<UnlockQueryRespose>
+                    {
+                        Response = activities
+                    };
                 }
 
             }

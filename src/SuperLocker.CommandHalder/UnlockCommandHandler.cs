@@ -1,6 +1,7 @@
 using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
 using SuperLocker.Core;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Repositories;
@@ -38,6 +39,10 @@ namespace SuperLocker.CommandHandler
 
                     _logger.LogInformation("UNLOCKED.SUCCESS lockId: {0}, userId: {1} ->", context.Message.LockId, context.Message.UserId);
                 }
+            }
+            catch (MySqlException dbExcpetion)
+            {
+                _logger.LogError(dbExcpetion, "DATABASE.FAILED.EXCEPTION");
             }
             catch (Exception e)
             {

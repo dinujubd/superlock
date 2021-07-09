@@ -12,6 +12,14 @@ namespace SuperLocker.DataContext.Adapters
             _cache = cache;
         }
 
+        /// <summary>
+        /// This is an utility to make a fixed size queue in redis
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <param name="MAX"></param>
+        /// <returns></returns>
         public async Task PushFixed<T>(string key, T data, int MAX = 20) where T : class
         {
             var record = await _cache.GetAsync<Queue<T>>(key);

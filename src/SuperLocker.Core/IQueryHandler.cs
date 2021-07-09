@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using SuperLocker.Core.Models;
+using System.Threading.Tasks;
 
 namespace SuperLocker.Core
 {
     public interface IQueryHandler<TQuery, TResponse> where TQuery : IQuery
     {
-        Task<TResponse> ExecuteAsync(TQuery query);
+        Task<QueryResponse<TResponse>> ExecuteAsync(TQuery query);
     }
 }
