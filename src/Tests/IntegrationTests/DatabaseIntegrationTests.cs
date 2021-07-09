@@ -9,7 +9,6 @@ namespace SuperLocker.Intgration.Tests
 {
     public class DatabaseIntegrationTests
     {
-
         [Fact]
         public void CanConnectAndSelectFromDatabase()
         {
