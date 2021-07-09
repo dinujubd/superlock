@@ -4,9 +4,6 @@ using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
 using SuperLocker.Core.Validators.Queries;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,7 +12,7 @@ namespace SuperLocker.Unit.Tests.SuperLocker.Core.Validators
     public class UnlockActivityQueryValidatorTests
     {
         private readonly Mock<IUserRepository> _mockUserRepository;
-        
+
         public UnlockActivityQueryValidatorTests()
         {
             _mockUserRepository = new Mock<IUserRepository>();

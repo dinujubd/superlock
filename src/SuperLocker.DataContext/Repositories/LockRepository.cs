@@ -4,7 +4,6 @@ using MySql.Data.MySqlClient;
 using SuperLocker.Core.Command;
 using SuperLocker.Core.Dtos;
 using SuperLocker.Core.Repositories;
-using SuperLocker.DataContext.Adapters;
 using SuperLocker.DataContext.Providers;
 using System;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace SuperLocker.DataContext.Repositories
         private readonly ILogger<UnlockCommand> _logger;
         private readonly MySqlConnection _conn;
         private readonly ICacheProxy _cacheAdapter;
-  
+
         public LockRepository(ConnectionPool<MySqlConnection> connectionPool, ILogger<UnlockCommand> logger, ICacheProxy cacheAdapter)
         {
             _logger = logger;
@@ -66,7 +65,7 @@ namespace SuperLocker.DataContext.Repositories
             {
                 var lockInfo = await GetLockAsync(Guid.Parse(userLock.LockId));
 
-                await _cacheAdapter.PushFixed<UnlockData>($"get_{userLock.UserId.ToString()}_last_unlocks", 
+                await _cacheAdapter.PushFixed<UnlockData>($"get_{userLock.UserId.ToString()}_last_unlocks",
                     new UnlockData { LockId = userLock.LockId, CreatedOn = DateTime.UtcNow, LockCode = lockInfo.Code });
             }
         }

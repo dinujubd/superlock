@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SuperLocker.Core.Validators.Queries
 {
-    public class UnlockActivityQueryValidator: AbstractValidator<UnlockActivityQuery>
+    public class UnlockActivityQueryValidator : AbstractValidator<UnlockActivityQuery>
     {
         private readonly IUserRepository _userRepository;
         public UnlockActivityQueryValidator(IUserRepository userRepository)

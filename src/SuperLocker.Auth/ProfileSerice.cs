@@ -29,7 +29,7 @@ namespace SuperLocker.Auth
                                 WHERE ur.UserId = @UserId";
 
                     var roles = await _conn.QueryAsync<UserRole>(query, new { UserId = userId });
-                    
+
                     var singleUser = roles.FirstOrDefault();
 
                     if (singleUser != null)

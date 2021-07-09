@@ -1,8 +1,6 @@
 using IdentityModel;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace SuperLocker.Auth
 {
@@ -35,7 +33,7 @@ namespace SuperLocker.Auth
                 }
             };
 
-      
+
         public static IEnumerable<IdentityResource> Resouces =>
             new List<IdentityResource> {
                 new IdentityResources.OpenId(),

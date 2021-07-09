@@ -39,9 +39,9 @@ namespace SuperLocker.CommandHandler
                     _logger.LogInformation("UNLOCKED.SUCCESS lockId: {0}, userId: {1} ->", context.Message.LockId, context.Message.UserId);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                _logger.LogError(e,"UNLOCKED.FAILED.EXCEPTION");
+                _logger.LogError(e, "UNLOCKED.FAILED.EXCEPTION");
                 throw;
             }
 

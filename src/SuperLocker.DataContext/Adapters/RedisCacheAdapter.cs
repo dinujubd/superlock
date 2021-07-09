@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SuperLocker.DataContext.Adapters
 {
-    public class RedisCacheAdapter:ICacheAdapter
+    public class RedisCacheAdapter : ICacheAdapter
     {
         private readonly IRedisDatabase _cache;
         public RedisCacheAdapter(IRedisDatabase cache)

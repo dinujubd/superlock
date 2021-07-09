@@ -14,7 +14,7 @@ namespace SuperLocker.Functional.Tests.Steps
     public class Commands_UnlockSteps
     {
         private readonly UnlockRequest _unlockRequest;
-        private  Response response;
+        private Response response;
         public Commands_UnlockSteps()
         {
             _unlockRequest = new UnlockRequest();
@@ -40,11 +40,11 @@ namespace SuperLocker.Functional.Tests.Steps
 
             var result = await client.PostAsync("http://localhost:5000/lock/unlock",
                 new StringContent(JsonConvert.SerializeObject(_unlockRequest)
-                , Encoding.UTF8,"application/json"));
+                , Encoding.UTF8, "application/json"));
 
-    
+
             var responseString = await result.Content.ReadAsStringAsync();
-             response = JsonConvert.DeserializeObject<Response>(responseString);
+            response = JsonConvert.DeserializeObject<Response>(responseString);
 
         }
 
@@ -65,7 +65,7 @@ namespace SuperLocker.Functional.Tests.Steps
     public class Response
     {
         public int status { get; set; }
-        public Dictionary<string,List<string>> errors { get; set; }
+        public Dictionary<string, List<string>> errors { get; set; }
     }
 
 }

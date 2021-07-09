@@ -1,6 +1,5 @@
 ﻿using StackExchange.Redis.Extensions.Core.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SuperLocker.DataContext.Proxies
@@ -12,7 +11,7 @@ namespace SuperLocker.DataContext.Proxies
         {
             _cache = cache;
         }
-        public async Task<T> QueryWithCache<T>(string key, Func<Task<T>> query) 
+        public async Task<T> QueryWithCache<T>(string key, Func<Task<T>> query)
         {
             var record = await _cache.GetAsync<T>(key);
 
@@ -31,8 +30,6 @@ namespace SuperLocker.DataContext.Proxies
             await _cache.RemoveAsync(key);
             command.Invoke();
         }
-
-        
 
     }
 }

@@ -19,7 +19,9 @@ namespace SuperLocker.Api.Tests.Validators
 
             Assert.Equal(isValid, validationResult.IsValid);
             if (!isValid)
+            {
                 Assert.Contains(validationResult.Errors, o => o.PropertyName == invalidProperyName);
+            }
         }
     }
 }
