@@ -15,9 +15,9 @@ namespace SuperLocker.DataContext.Repositories
     {
         private readonly ILogger<UnlockCommand> _logger;
         private readonly MySqlConnection _conn;
-        private readonly ICacheAdapter _cacheAdapter;
+        private readonly ICacheProxy _cacheAdapter;
   
-        public LockRepository(ConnectionPool<MySqlConnection> connectionPool, ILogger<UnlockCommand> logger, ICacheAdapter cacheAdapter)
+        public LockRepository(ConnectionPool<MySqlConnection> connectionPool, ILogger<UnlockCommand> logger, ICacheProxy cacheAdapter)
         {
             _logger = logger;
             _conn = connectionPool.Get();
