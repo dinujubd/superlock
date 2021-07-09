@@ -2,9 +2,11 @@ using System;
 
 namespace SuperLocker.Core.Dtos
 {
-    public class UnlockTime
+    public class UnlockData
     {
-        public DateTime unlock_time { get; set; }
+        public string LockId { get; set; }
+        public string LockCode { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 
 }
