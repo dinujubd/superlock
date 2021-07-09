@@ -8,7 +8,7 @@ namespace SuperLocker.Api.Tests.Validators
     public class UnlockRequestValidatorTests
     {
         [Theory]
-        [InlineData("00000000-0000-0000-0000-000000000000", false, "UserId")]
+        [InlineData("00000000-0000-0000-0000-000000000000", false, "LockId")]
         [InlineData("71d5352c-dfb7-11eb-ba80-0242ac130004", true, "")]
         public void UnlockCommandShouldNotAcceptAnyEmptyUserOrLock(Guid lockId, bool isValid, string invalidProperyName)
         {
