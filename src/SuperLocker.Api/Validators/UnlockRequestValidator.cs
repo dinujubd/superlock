@@ -9,7 +9,6 @@ namespace SuperLocker.Api.Validators
         public UnlockRequestValidator()
         {
             RuleFor(x => x.LockId).NotEqual(Guid.Empty);
-            RuleFor(x => x.UserId).NotEqual(Guid.Empty);
         }
 
     }

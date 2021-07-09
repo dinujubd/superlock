@@ -1,4 +1,3 @@
-using SuperLocker.Core.Command;
 using SuperLocker.Core.Dtos;
 using SuperLocker.Core.Query;
 using System;

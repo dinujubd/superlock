@@ -1,28 +1,11 @@
-using FluentValidation;
 using FluentValidation.AspNetCore;
-using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MySql.Data.MySqlClient;
-using StackExchange.Redis.Extensions.Core.Abstractions;
-using StackExchange.Redis.Extensions.Core.Configuration;
-using StackExchange.Redis.Extensions.Newtonsoft;
-using SuperLocker.Api.Models;
-using SuperLocker.Api.Validators;
-using SuperLocker.CommandHandler;
-using SuperLocker.Core;
-using SuperLocker.Core.Command;
-using SuperLocker.Core.Query;
-using SuperLocker.Core.Repositories;
-using SuperLocker.Core.Validators.Command;
-using SuperLocker.DataContext.Adapters;
-using SuperLocker.DataContext.Providers;
-using SuperLocker.DataContext.Repositories;
-using SuperLocker.QueryHandler;
+using SuperLocker.Api.Extensions;
 
 namespace SuperLocker.Api
 {
@@ -39,42 +22,14 @@ namespace SuperLocker.Api
         {
             services.AddControllers().AddFluentValidation();
 
-            services.AddScoped<IValidator<UnlockCommand>, UnlockCommandValidator>();
-            services.AddScoped<IValidator<UnlockRequest>, UnlockRequestValidator>();
 
-            services.AddScoped<IDatabaseConnectionProvider<MySqlConnection>, MySqlConnectionProvider>();
-
-            services.AddScoped(serviceProvider =>
-            {
-                var provider = serviceProvider.GetRequiredService<IDatabaseConnectionProvider<MySqlConnection>>();
-
-                return new ConnectionPool<MySqlConnection>(() => provider.Get());
-            });
-
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<ILockRepository, LockRepository>();
-
-            services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
-
-            services.AddScoped<ICacheAdapter, MySqlCacheAdapter>();
-
-            services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>((options) =>
-            {
-                return Configuration.GetSection("Redis").Get<RedisConfiguration>();
-            });
-
-   
-            services.AddMassTransit(x =>
-            {
-                x.AddConsumer<UnlockCommandHandler>();
-
-                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
-                {
-                    cfg.Host("rabbitmq://rabbitmq");
-                }));
-            });
-
-            services.AddMassTransitHostedService(true);
+            services.RegisterValidators();
+            services.RegisterDatabases(Configuration);
+            services.RegisterConfigurations(Configuration);
+            services.RegisterRepositoris();
+            services.RegisterAuthorizationServices(Configuration);
+            services.RegisterServieBus(Configuration);
+            services.RegisterQueryHandlers();
 
             services.AddSwaggerGen(c =>
             {
@@ -96,6 +51,7 @@ namespace SuperLocker.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -104,4 +60,5 @@ namespace SuperLocker.Api
             });
         }
     }
+
 }

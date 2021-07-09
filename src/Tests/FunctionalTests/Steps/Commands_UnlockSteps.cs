@@ -14,23 +14,18 @@ namespace SuperLocker.Functional.Tests.Steps
     public class Commands_UnlockSteps
     {
         private readonly UnlockRequest _unlockRequest;
-        private  Response response;
+        private Response response;
         public Commands_UnlockSteps()
         {
             _unlockRequest = new UnlockRequest();
             response = new Response();
         }
 
-        [Given(@"the userId is (.*)")]
-        public void GivenTheUserIdIs(string userId)
-        {
-            _unlockRequest.UserId = Guid.Parse(userId);
-        }
 
         [Given(@"the lockId is (.*)")]
         public void GivenTheLockIdIsAb_Cf_Addbfbf(string lockId)
         {
-            _unlockRequest.UserId = Guid.Parse(lockId);
+            _unlockRequest.LockId = Guid.Parse(lockId);
         }
 
         [When(@"requted for unlock")]
@@ -40,17 +35,16 @@ namespace SuperLocker.Functional.Tests.Steps
 
             var content = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("userId", _unlockRequest.UserId.ToString()),
                 new KeyValuePair<string, string>("lockId", _unlockRequest.LockId.ToString())
             });
 
             var result = await client.PostAsync("http://localhost:5000/lock/unlock",
                 new StringContent(JsonConvert.SerializeObject(_unlockRequest)
-                , Encoding.UTF8,"application/json"));
+                , Encoding.UTF8, "application/json"));
 
-    
+
             var responseString = await result.Content.ReadAsStringAsync();
-             response = JsonConvert.DeserializeObject<Response>(responseString);
+            response = JsonConvert.DeserializeObject<Response>(responseString);
 
         }
 
@@ -71,7 +65,7 @@ namespace SuperLocker.Functional.Tests.Steps
     public class Response
     {
         public int status { get; set; }
-        public Dictionary<string,List<string>> errors { get; set; }
+        public Dictionary<string, List<string>> errors { get; set; }
     }
 
 }

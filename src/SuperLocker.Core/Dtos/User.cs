@@ -8,16 +8,16 @@ namespace SuperLocker.Core.Dtos
         {
             get
             {
-                return new Guid(user_id);
+                return new Guid(UserId);
             }
             private set
             {
                 Id = value;
             }
         }
-        public string user_id { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
+        public string UserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 
 }

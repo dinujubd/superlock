@@ -5,8 +5,8 @@ using SuperLocker.Core.Command;
 using SuperLocker.Core.Dtos;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
-using SuperLocker.DataContext.Adapters;
 using SuperLocker.DataContext.Providers;
+using SuperLocker.DataContext.Proxies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +19,9 @@ namespace SuperLocker.DataContext.Repositories
         private readonly ILogger<UnlockCommand> _logger;
         private readonly MySqlConnection _conn;
         private readonly ConnectionPool<MySqlConnection> _connectionPool;
-        private readonly ICacheAdapter _cacheAdapter;
-  
-        public UserRepository(ConnectionPool<MySqlConnection> connectionPool, ILogger<UnlockCommand> logger, ICacheAdapter cacheAdapter)
+        private readonly ICacheProxy _cacheAdapter;
+
+        public UserRepository(ConnectionPool<MySqlConnection> connectionPool, ILogger<UnlockCommand> logger, ICacheProxy cacheAdapter)
         {
             _logger = logger;
             _connectionPool = connectionPool;
@@ -33,11 +33,6 @@ namespace SuperLocker.DataContext.Repositories
         {
             var user = await GetUserAsync(query.UserId);
 
-            if (user == null)
-            {
-                throw new InvalidOperationException("Userd lock has no match");
-            }
-
             var lockResponse = await getUserUnlockActivites(query);
 
             _connectionPool.Return(_conn);
@@ -45,9 +40,9 @@ namespace SuperLocker.DataContext.Repositories
             return new UnlockQueryRespose
             {
                 UserId = user.Id,
-                FirstName = user.first_name,
-                LastName = user.last_name,
-                LastUnlocked = lockResponse.Select(x => x.unlock_time).ToList()
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                LastUnlocked = lockResponse.ToList()
             };
         }
 
@@ -60,13 +55,19 @@ namespace SuperLocker.DataContext.Repositories
             });
         }
 
-        private async Task<IEnumerable<UnlockTime>> getUserUnlockActivites(UnlockActivityQuery query)
+        private async Task<IEnumerable<UnlockData>> getUserUnlockActivites(UnlockActivityQuery query)
         {
-            var lockInfo = "SELECT unlock_time from AppDBSuperLock.unlock_activity_logs where user_id = @UserId";
+            return await _cacheAdapter.QueryWithCache($"get_{query.UserId}_last_unlocks", async () =>
+            {
+                var lockInfo = @"SELECT l.LockId, l.Code AS LockCode, a.CreatedOn 
+                            FROM UserUnlockActivity AS a
+                            INNER JOIN Locks AS l
+                            ON l.LockId = a.LockId
+                            WHERE l.IsActive AND UserId = @UserId
+                            ORDER BY a.CreatedOn LIMIT 20";
 
-            var lockResponse = await this._conn.QueryAsync<UnlockTime>(lockInfo, new { UserId = query.UserId.ToString() });
-            return lockResponse;
+                return await this._conn.QueryAsync<UnlockData>(lockInfo, new { UserId = query.UserId.ToString() });
+            });
         }
-
     }
 }
