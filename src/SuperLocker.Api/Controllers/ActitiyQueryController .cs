@@ -26,8 +26,8 @@ namespace SuperLocker.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> UnlockActivity()
         {
-            var response = await _queryHandler.ExecuteAsync(new UnlockActivityQuery { UserId = _user.UserId });
-            return response.IsValid ? Ok(response) : BadRequest(response);
+            var queryResponse = await _queryHandler.ExecuteAsync(new UnlockActivityQuery { UserId = _user.UserId });
+            return queryResponse.IsValid ? Ok(queryResponse.Response) : BadRequest(queryResponse.Errors);
         }
     }
 
