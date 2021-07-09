@@ -21,16 +21,11 @@ namespace SuperLocker.Functional.Tests.Steps
             response = new Response();
         }
 
-        [Given(@"the userId is (.*)")]
-        public void GivenTheUserIdIs(string userId)
-        {
-            _unlockRequest.UserId = Guid.Parse(userId);
-        }
 
         [Given(@"the lockId is (.*)")]
         public void GivenTheLockIdIsAb_Cf_Addbfbf(string lockId)
         {
-            _unlockRequest.UserId = Guid.Parse(lockId);
+            _unlockRequest.LockId = Guid.Parse(lockId);
         }
 
         [When(@"requted for unlock")]
@@ -40,7 +35,6 @@ namespace SuperLocker.Functional.Tests.Steps
 
             var content = new FormUrlEncodedContent(new[]
             {
-                new KeyValuePair<string, string>("userId", _unlockRequest.UserId.ToString()),
                 new KeyValuePair<string, string>("lockId", _unlockRequest.LockId.ToString())
             });
 
