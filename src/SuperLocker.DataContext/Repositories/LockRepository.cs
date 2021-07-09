@@ -55,16 +55,19 @@ namespace SuperLocker.DataContext.Repositories
 
             var inseted = await this._conn.ExecuteAsync(unlockQuery, new
             {
-                Id = Guid.NewGuid().ToString(),
-                LockId = userLock.LockId.ToString(),
-                UserId = userLock.UserId.ToString(),
+                UserUnlockActivityId = Guid.NewGuid().ToString(),
+                LockId = userLock.LockId,
+                UserId = userLock.UserId,
                 UserLockId = userLock.UserLockId,
                 CreatedOn = DateTime.Now
             });
 
             if (inseted > 0)
             {
-                await _cacheAdapter.PushFixed($"get_user_{userLock.UserId.ToString()}_last_unlock", DateTime.UtcNow.ToString());
+                var lockInfo = await GetLockAsync(Guid.Parse(userLock.LockId));
+
+                await _cacheAdapter.PushFixed<UnlockData>($"get_{userLock.UserId.ToString()}_last_unlocks", 
+                    new UnlockData { LockId = userLock.LockId, CreatedOn = DateTime.UtcNow, LockCode = lockInfo.Code });
             }
         }
 
