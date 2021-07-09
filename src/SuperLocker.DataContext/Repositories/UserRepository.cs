@@ -45,8 +45,8 @@ namespace SuperLocker.DataContext.Repositories
             return new UnlockQueryRespose
             {
                 UserId = user.Id,
-                FirstName = user.first_name,
-                LastName = user.last_name,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 LastUnlocked = lockResponse.Select(x => x.unlock_time).ToList()
             };
         }
