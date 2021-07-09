@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -8,13 +9,18 @@ using MySql.Data.MySqlClient;
 using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Newtonsoft;
 using SuperLocker.Api.Models;
+using SuperLocker.Api.Validators;
 using SuperLocker.CommandHandler;
 using SuperLocker.Core;
+using SuperLocker.Core.Command;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
+using SuperLocker.Core.Validators.Command;
+using SuperLocker.Core.Validators.Queries;
 using SuperLocker.Crosscuts;
 using SuperLocker.DataContext.Adapters;
 using SuperLocker.DataContext.Providers;
+using SuperLocker.DataContext.Proxies;
 using SuperLocker.DataContext.Repositories;
 using SuperLocker.QueryHandler;
 using System;
@@ -35,10 +41,16 @@ namespace SuperLocker.Api.Extensions
             {
                 x.AddConsumer<UnlockCommandHandler>();
 
-                x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+
+                x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("rabbitmq://localhost");
-                }));
+                    cfg.ConfigureEndpoints(context);
+                });
+
+                //x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+                //{
+                //    cfg.Host("rabbitmq://localhost");
+                //}));
             });
 
             services.AddMassTransitHostedService(true);
@@ -87,7 +99,8 @@ namespace SuperLocker.Api.Extensions
 
                 return new ConnectionPool<MySqlConnection>(() => provider.Get());
             });
-            services.AddScoped<ICacheAdapter, MySqlCacheAdapter>();
+            services.AddScoped<ICacheProxy, RedisMySqlCacheProxy>();
+            services.AddScoped<ICacheAdapter, RedisCacheAdapter>();
             services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>((options) =>
             {
                 return configuration.GetSection("Redis").Get<RedisConfiguration>();
@@ -106,6 +119,13 @@ namespace SuperLocker.Api.Extensions
             services.Configure<DatabaseConfigurations>(configuration.GetSection(DatabaseConfigurations.Database));
             services.Configure<RabbitMQConfiguration>(configuration.GetSection(RabbitMQConfiguration.RabbitMq));
             services.Configure<ServiceConfigurations>(configuration.GetSection(ServiceConfigurations.Services));
+        }
+
+        public static void RegisterValidators(this IServiceCollection services)
+        {
+            services.AddScoped<IValidator<UnlockCommand>, UnlockCommandValidator>();
+            services.AddScoped<IValidator<UnlockActivityQuery>, UnlockActivityQueryValidator>();
+            services.AddScoped<IValidator<UnlockRequest>, UnlockRequestValidator>();
         }
 
         private static AppUser MapAppUserFromContext(IServiceProvider context)

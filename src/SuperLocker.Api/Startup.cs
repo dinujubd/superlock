@@ -20,8 +20,10 @@ namespace SuperLocker.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddFluentValidation(o => o.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddControllers().AddFluentValidation();
 
+
+            services.RegisterValidators();
             services.RegisterDatabases(Configuration);
             services.RegisterConfigurations(Configuration);
             services.RegisterRepositoris();
