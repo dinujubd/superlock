@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "a851dcc1-436a-482a-83d1-e8e2b6930ba0",
+		"name": "SuperLocker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetUnlockActivity",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// pm.test(\"Status code is 200\", function () {\r",
+							"//   pm.response.to.have.status(200);\r",
+							"// });\r",
+							"\r",
+							"// pm.test(\"Status code is 200\", function () {\r",
+							"//   const responseJson = pm.response.json();\r",
+							"//   pm.expect(responseJson.firstName).to.eql('Dummy First Name');\r",
+							"// });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkIwRDgzMDUyQjcwNjMyQUE3MTg1N0ZCMDI5ODMzRjY1IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2MjU4NDkwODYsImV4cCI6MTYyNTg1MjY4NiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMyIsImNsaWVudF9pZCI6ImNsaWVudCIsInN1YiI6ImFhOWQ1ZTViLTViZWItNDMxOC04NmFkLTg3OTBjM2MyMzMxMSIsImF1dGhfdGltZSI6MTYyNTg0OTA4NiwiaWRwIjoibG9jYWwiLCJyb2xlIjoiYWRtaW4iLCJ1c2VySWQiOiJhYTlkNWU1Yi01YmViLTQzMTgtODZhZC04NzkwYzNjMjMzMTEiLCJmaXJzdE5hbWUiOiJBZG1pbiBGaXJzdCBOYW1lIiwibGFzdE5hbWUiOiJBZG1pbiBMYXN0IE5hbWUiLCJ1c2VyTmFtZSI6ImFkbWluXzEyMyIsImp0aSI6IkZGRkZBRDdFRDVFMzA1Qjc5RkRDOTQyOTJEMURGNzE2IiwiaWF0IjoxNjI1ODQ5MDg2LCJzY29wZSI6WyJzdXBlcl9sb2NrX2FwaSJdLCJhbXIiOlsicGFzc3dvcmQiXX0.i0btJrimCnJDzW3mZap0i4hHE7FhjbXbQtiR_6cAgbPA5VwlTpOABABzZUVorCUOFdWeHlyd_abX5Iow9Vu_BfqYJJkh9kfmaNaO5I4KgGCw00MV3rMc5tgktNlWclHMoM-BbewdH8q79CWxyP-WvFLiue76HRudT9GB7jEI2K5rLs04Ppfc_uYAtkE2Gk0HPqrBMFN_ja7SkQzGBlUEWYpDQUS1xNZJ2BxNiWHrzhJNm96Y-qwnETjQNvflR09uqZRbI0Q3tjNlpDjnmQfm6rz5z6K-lEQQg0xhiIhekCVKKk5ui6npTOSHQBzVH86gvlrDFYpBdJw5-Q-FyibkBw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/ActitiyQuery/UnlockActivity",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"ActitiyQuery",
+						"UnlockActivity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "client",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "secret",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "super_lock_api",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "admin_123",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:5003/connect/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unlock",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkIwRDgzMDUyQjcwNjMyQUE3MTg1N0ZCMDI5ODMzRjY1IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2MjU4NDkwODYsImV4cCI6MTYyNTg1MjY4NiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMyIsImNsaWVudF9pZCI6ImNsaWVudCIsInN1YiI6ImFhOWQ1ZTViLTViZWItNDMxOC04NmFkLTg3OTBjM2MyMzMxMSIsImF1dGhfdGltZSI6MTYyNTg0OTA4NiwiaWRwIjoibG9jYWwiLCJyb2xlIjoiYWRtaW4iLCJ1c2VySWQiOiJhYTlkNWU1Yi01YmViLTQzMTgtODZhZC04NzkwYzNjMjMzMTEiLCJmaXJzdE5hbWUiOiJBZG1pbiBGaXJzdCBOYW1lIiwibGFzdE5hbWUiOiJBZG1pbiBMYXN0IE5hbWUiLCJ1c2VyTmFtZSI6ImFkbWluXzEyMyIsImp0aSI6IkZGRkZBRDdFRDVFMzA1Qjc5RkRDOTQyOTJEMURGNzE2IiwiaWF0IjoxNjI1ODQ5MDg2LCJzY29wZSI6WyJzdXBlcl9sb2NrX2FwaSJdLCJhbXIiOlsicGFzc3dvcmQiXX0.i0btJrimCnJDzW3mZap0i4hHE7FhjbXbQtiR_6cAgbPA5VwlTpOABABzZUVorCUOFdWeHlyd_abX5Iow9Vu_BfqYJJkh9kfmaNaO5I4KgGCw00MV3rMc5tgktNlWclHMoM-BbewdH8q79CWxyP-WvFLiue76HRudT9GB7jEI2K5rLs04Ppfc_uYAtkE2Gk0HPqrBMFN_ja7SkQzGBlUEWYpDQUS1xNZJ2BxNiWHrzhJNm96Y-qwnETjQNvflR09uqZRbI0Q3tjNlpDjnmQfm6rz5z6K-lEQQg0xhiIhekCVKKk5ui6npTOSHQBzVH86gvlrDFYpBdJw5-Q-FyibkBw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lockId\": \"a2795184-1635-451b-98a5-51709dda17db\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/UnlockCommand/Unlock",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"UnlockCommand",
+						"Unlock"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
