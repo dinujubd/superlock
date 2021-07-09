@@ -48,7 +48,6 @@ namespace SuperLocker.Functional.Tests.Steps
             {
                 var userName = row[0];
                 var isValid = row[1];
-                //Assert.Equal(JsonConvert.SerializeObject(table), JsonConvert.SerializeObject(resultTable);
                 Assert.True(resultTable[userName].ToString().Equals(isValid, System.StringComparison.InvariantCultureIgnoreCase));
             } 
         }
@@ -61,6 +60,8 @@ namespace SuperLocker.Functional.Tests.Steps
                 Timeout = -1
             };
 
+            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("client_id", "client");
@@ -70,14 +71,7 @@ namespace SuperLocker.Functional.Tests.Steps
             request.AddParameter("username", userName);
             request.AddParameter("password", password);
             var response = await client.ExecuteAsync(request);
-            
-            System.Console.WriteLine(response.Content);
-
-            if(!response.IsSuccessful)
-            {
-                Console.WriteLine(response.ErrorMessage);
-                throw new Exception(response.ErrorMessage);
-            }
+           
 
             return response.IsSuccessful && response.Content.Contains("access_token");
         }
