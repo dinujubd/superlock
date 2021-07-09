@@ -19,19 +19,21 @@ namespace SuperLocker.Functional.Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class Commands_UnlockFeature : object, Xunit.IClassFixture<Commands_UnlockFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "automated")]
+    public partial class ApplicationUsersRequireATokenToMakeRequestsFeature : object, Xunit.IClassFixture<ApplicationUsersRequireATokenToMakeRequestsFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "automated"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "UnlockCommand.feature"
+#line 1 "GetAccessToken.feature"
 #line hidden
         
-        public Commands_UnlockFeature(Commands_UnlockFeature.FixtureData fixtureData, SuperLocker_Functional_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ApplicationUsersRequireATokenToMakeRequestsFeature(ApplicationUsersRequireATokenToMakeRequestsFeature.FixtureData fixtureData, SuperLocker_Functional_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +42,8 @@ namespace SuperLocker.Functional.Tests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Commands.Unlock", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Application Users Require a Token to make requests", null, ProgrammingLanguage.CSharp, new string[] {
+                        "automated"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,22 +78,40 @@ namespace SuperLocker.Functional.Tests.Features
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "UserName",
+                        "Password"});
+            table1.AddRow(new string[] {
+                        "admin_123",
+                        "admin123"});
+            table1.AddRow(new string[] {
+                        "badmin",
+                        "bad_pass"});
+#line 5
+ testRunner.Given("following 2 users having", ((string)(null)), table1, "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Invalid User Request")]
-        [Xunit.TraitAttribute("FeatureTitle", "Commands.Unlock")]
-        [Xunit.TraitAttribute("Description", "Invalid User Request")]
-        [Xunit.TraitAttribute("Category", "mytag")]
-        public virtual void InvalidUserRequest()
+        [Xunit.SkippableFactAttribute(DisplayName="User tries to get a token")]
+        [Xunit.TraitAttribute("FeatureTitle", "Application Users Require a Token to make requests")]
+        [Xunit.TraitAttribute("Description", "User tries to get a token")]
+        [Xunit.TraitAttribute("Category", "WI10")]
+        public virtual void UserTriesToGetAToken()
         {
             string[] tagsOfScenario = new string[] {
-                    "mytag"};
+                    "WI10"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid User Request", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("User tries to get a token", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -110,17 +131,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
- testRunner.Given("the lockId is 4ab78e29-c12f-4381-a1dd-3e605b959fbf", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 6
- testRunner.When("requted for unlock", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 13
+ testRunner.When("they request for token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 7
- testRunner.Then("the result should have status 400", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 8
- testRunner.And("the error should contain LockId", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "UserName",
+                            "Got Token"});
+                table2.AddRow(new string[] {
+                            "admin_123",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "badmin",
+                            "false"});
+#line 14
+ testRunner.Then("the token result should be", ((string)(null)), table2, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -133,12 +160,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                Commands_UnlockFeature.FeatureSetup();
+                ApplicationUsersRequireATokenToMakeRequestsFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Commands_UnlockFeature.FeatureTearDown();
+                ApplicationUsersRequireATokenToMakeRequestsFeature.FeatureTearDown();
             }
         }
     }
