@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SuperLocker.Core
+namespace SuperLocker.Core.Models
 {
     public sealed class QueryResponse<TResponse>
     {

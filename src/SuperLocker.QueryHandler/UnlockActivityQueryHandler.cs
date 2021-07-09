@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 using SuperLocker.Core;
+using SuperLocker.Core.Models;
 using SuperLocker.Core.Query;
 using SuperLocker.Core.Repositories;
 using System.Collections.Generic;

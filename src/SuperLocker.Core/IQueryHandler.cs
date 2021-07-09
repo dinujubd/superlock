@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using SuperLocker.Core.Models;
+using System.Threading.Tasks;
 
 namespace SuperLocker.Core
 {
