@@ -15,7 +15,6 @@ namespace SuperLocker.Auth
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    // webBuilder.UseUrls("http://localhost:5005, https://localhost:5006");
                 });
     }
 }
