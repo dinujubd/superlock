@@ -37,7 +37,7 @@ namespace SuperLocker.Api.Controllers
         public async Task<IActionResult> UnlockActivity()
         {
             var response = await _queryHandler.ExecuteAsync(new UnlockActivityQuery { UserId = _user.UserId });
-            return Ok(response);
+            return response.IsValid ? Ok(response) : BadRequest(response);
         }
     }
 
