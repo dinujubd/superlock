@@ -1,27 +1,32 @@
 version: "3.6"
 
 services:
-    api:
-        image: api
-        build:
-            context: ../src
-            dockerfile: "SuperLocker.Api/Dockerfile"
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=https://+:443;http://+:80
-            - ASPNETCORE_Kestrel__Certificates__Default__Password=secret#lock123
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/super_lock.pfx
-        ports: 
-            - "5000:80"
-            - "5001:443"
-        depends_on: 
-            - rabbitmq
-            - db
-            - redis
-        links: 
-            - rabbitmq
-            - db
-            - redis
+    # api:
+    #     image: api
+    #     build:
+    #         context: ../src
+    #         dockerfile: "SuperLocker.Api/Dockerfile"
+    #     environment:
+    #         - ASPNETCORE_ENVIRONMENT=Development
+    #         - ASPNETCORE_URLS=https://+;http://+;
+    #         - ASPNETCORE_Kestrel__Certificates__Default__Password=secret#lock123
+    #         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/super_lock.pfx
+    #     ports: 
+    #         - "5000:80"
+    #         - "5001:443"
+    #     depends_on: 
+    #         - rabbitmq
+    #         - db
+    #         - redis
+    #     links: 
+    #         - rabbitmq
+    #         - db
+    #         - redis
+    #     networks: 
+    #         - api_network
+    #     volumes: 
+    #         - ./api_cert:/https:ro
+
     auth:
         image: auth
         build:
@@ -29,7 +34,7 @@ services:
             dockerfile: "SuperLocker.Auth/Dockerfile"
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_URLS=https://+;http://+;
             - ASPNETCORE_Kestrel__Certificates__Default__Password=secret#lock123
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/super_lock.pfx
         ports: 
@@ -40,13 +45,13 @@ services:
         links: 
             - db
         volumes: 
-            - ./auth_cert:/https/
+            - ./auth_cert:/https:ro
             
     db:
         image: mariadb
         hostname: db
         environment:
-          MYSQL_ROOT_PASSWORD: rpass
+            MYSQL_ROOT_PASSWORD: rpass
         ports: 
             - 3306:3306
         volumes: 
