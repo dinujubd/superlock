@@ -70,6 +70,8 @@ namespace SuperLocker.Functional.Tests.Steps
             request.AddParameter("username", userName);
             request.AddParameter("password", password);
             var response = await client.ExecuteAsync(request);
+            
+            System.Console.WriteLine(response.Content);
 
             if(!response.IsSuccessful)
             {
