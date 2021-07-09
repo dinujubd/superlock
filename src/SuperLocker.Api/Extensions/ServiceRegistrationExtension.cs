@@ -35,28 +35,23 @@ namespace SuperLocker.Api.Extensions
             services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
         }
 
-        public static void RegisterServieBus(this IServiceCollection services)
+        public static void RegisterServieBus(this IServiceCollection services, IConfiguration configuration)
         {
+            var rabbitmqConfig = configuration.GetSection(RabbitMQConfiguration.RabbitMq).Get<RabbitMQConfiguration>();
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<UnlockCommandHandler>();
-
-
                 x.UsingRabbitMq((context, cfg) =>
                 {
+                    cfg.Host(rabbitmqConfig.ConnectionString);
                     cfg.ConfigureEndpoints(context);
                 });
-
-                //x.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
-                //{
-                //    cfg.Host("rabbitmq://localhost");
-                //}));
             });
 
             services.AddMassTransitHostedService(true);
         }
 
-        public static void RegisterAuthorizationServices(this IServiceCollection services)
+        public static void RegisterAuthorizationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(options =>
             {
@@ -66,7 +61,8 @@ namespace SuperLocker.Api.Extensions
             })
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = "https://localhost:5003";
+                var service = configuration.GetSection(ServiceConfigurations.Services).Get<ServiceConfigurations>();
+                options.Authority = service.Auth;
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -80,7 +76,7 @@ namespace SuperLocker.Api.Extensions
                 options.AddPolicy("ApiScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "api1");
+                    policy.RequireClaim("scope", "super_lock_api");
                 });
             });
 

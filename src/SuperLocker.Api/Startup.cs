@@ -27,8 +27,8 @@ namespace SuperLocker.Api
             services.RegisterDatabases(Configuration);
             services.RegisterConfigurations(Configuration);
             services.RegisterRepositoris();
-            services.RegisterAuthorizationServices();
-            services.RegisterServieBus();
+            services.RegisterAuthorizationServices(Configuration);
+            services.RegisterServieBus(Configuration);
             services.RegisterQueryHandlers();
 
             services.AddSwaggerGen(c =>

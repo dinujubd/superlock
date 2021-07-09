@@ -1,7 +1,9 @@
 using Dapper;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
+using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
+using SuperLocker.Crosscuts;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -10,11 +12,16 @@ namespace SuperLocker.Auth
 {
     public class ProfileSerice : IProfileService
     {
+        private readonly IOptions<DatabaseConfigurations> _config;
+        public ProfileSerice(IOptions<DatabaseConfigurations> config)
+        {
+           _config = config;
+        }
+
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
+            var _connectionString = _config.Value.ConnectionString;
 
-
-            var _connectionString = "Server=db;Database=AppDBSuperLock;Uid=root;Pwd=rpass;";
             using (var _conn = new MySqlConnection(_connectionString))
             {
                 var userId = context.Subject.Claims.Where(x => x.Type == "sub").Select(x => x.Value).FirstOrDefault();

@@ -9,7 +9,7 @@ namespace SuperLocker.Auth
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("api1", "My API")
+                new ApiScope("super_lock_api", "My API")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -18,21 +18,14 @@ namespace SuperLocker.Auth
                 new Client
                 {
                     ClientId = "client",
-
-                    // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-
-                    // secret for authentication
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-
-                    // scopes that client has access to
-                    AllowedScopes = { "api1", "openid", "profile", "email"},
+                    AllowedScopes = { "super_lock_api", "openid", "profile", "email"},
                 }
             };
-
 
         public static IEnumerable<IdentityResource> Resouces =>
             new List<IdentityResource> {
