@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dapper;
 using FluentValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -103,6 +104,10 @@ namespace SuperLocker.Api.Extensions
             {
                 return configuration.GetSection("Redis").Get<RedisConfiguration>();
             });
+            
+            SqlMapper.AddTypeHandler(new MySqlGuidMapper());
+            SqlMapper.RemoveTypeMap(typeof(Guid));
+            SqlMapper.RemoveTypeMap(typeof(Guid?));
         }
 
         public static void RegisterRepositoris(this IServiceCollection services)

@@ -34,9 +34,7 @@ namespace SuperLocker.Api
             services.RegisterServieBus(Configuration);
             services.RegisterQueryHandlers();
             
-            SqlMapper.AddTypeHandler(new MySqlGuidMapper());
-            SqlMapper.RemoveTypeMap(typeof(Guid));
-            SqlMapper.RemoveTypeMap(typeof(Guid?));
+           
 
             services.AddSwaggerGen(c =>
             {

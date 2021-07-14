@@ -12,7 +12,7 @@ namespace SuperLocker.Intgration.Tests
         [Fact]
         public void CanConnectAndSelectFromDatabase()
         {
-            using var database = ThrowawayDatabase.Create("Server = localhost; Uid = root; Pwd = rpass");
+            using var database = ThrowawayDatabase.Create("Server=localhost;Uid=root;Pwd=rpass;");
             using var connection = new MySqlConnection(database.ConnectionString);
             connection.Open();
 
@@ -30,7 +30,7 @@ namespace SuperLocker.Intgration.Tests
                 "Roles", "Users", "UserUnlockActivity", "UserRoles", "UserLocks", "Locks"
             };
 
-            using var database = ThrowawayDatabase.Create("Server = localhost; Uid = root; Pwd = rpass");
+            using var database = ThrowawayDatabase.Create("Server=localhost;Uid=root;Pwd=rpass;");
             using var connection = new MySqlConnection(database.ConnectionString);
 
             connection.Open();
