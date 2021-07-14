@@ -44,7 +44,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:5001/ActitiyQuery/UnlockActivity",
+					"raw": "https://localhost:5001/ActivityQuery/UnlockActivity",
 					"protocol": "https",
 					"host": [
 						"localhost"
