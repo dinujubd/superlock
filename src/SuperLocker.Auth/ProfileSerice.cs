@@ -1,21 +1,22 @@
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Dapper;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using SuperLocker.Crosscuts;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using SuperLocker.Shared;
 
 namespace SuperLocker.Auth
 {
     public class ProfileSerice : IProfileService
     {
         private readonly IOptions<DatabaseConfigurations> _config;
+
         public ProfileSerice(IOptions<DatabaseConfigurations> config)
         {
-           _config = config;
+            _config = config;
         }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -28,14 +29,15 @@ namespace SuperLocker.Auth
 
                 if (userId != null)
                 {
-                    var query = @"SELECT u.UserName, u.FirstName, u.LastName, r.Name AS RoleName FROM AppDBSuperLock.UserRoles ur
+                    var query =
+                        @"SELECT u.UserName, u.FirstName, u.LastName, r.Name AS RoleName FROM AppDBSuperLock.UserRoles ur
                                 INNER JOIN AppDBSuperLock.Roles r
                                 ON r.RoleId = ur.RoleId
                                 INNER JOIN AppDBSuperLock.Users u
                                 ON u.UserId = ur.UserId
                                 WHERE ur.UserId = @UserId";
 
-                    var roles = await _conn.QueryAsync<UserRole>(query, new { UserId = userId });
+                    var roles = await _conn.QueryAsync<UserRole>(query, new {UserId = userId});
 
                     var singleUser = roles.FirstOrDefault();
 
@@ -48,9 +50,9 @@ namespace SuperLocker.Auth
                         context.IssuedClaims.Add(new Claim("userName", singleUser.UserName));
                     }
                 }
+
                 context.IssuedClaims.AddRange(context.Subject.Claims);
             }
-
         }
 
         public Task IsActiveAsync(IsActiveContext context)

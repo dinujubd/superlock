@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>e61dcb0e-d9dc-468d-a528-5e7ef84f6493</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <RootNamespace>SuperLocker.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,9 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperLocker.Core\SuperLocker.Core.csproj" />
+    <ProjectReference Include="..\SuperLocker.Application\SuperLocker.Application.csproj" />
+    <ProjectReference Include="..\SuperLocker.Domain\SuperLocker.Domain.csproj" />
     <ProjectReference Include="..\SuperLocker.CommandHalder\SuperLocker.CommandHalder.csproj" />
-    <ProjectReference Include="..\SuperLocker.DataContext\SuperLocker.DataContext.csproj" />
+    <ProjectReference Include="..\SuperLocker.Infrastructure\SuperLocker.Infrastructure.csproj" />
     <ProjectReference Include="..\SuperLocker.QueryHandler\SuperLocker.QueryHandler.csproj" />
   </ItemGroup>
 

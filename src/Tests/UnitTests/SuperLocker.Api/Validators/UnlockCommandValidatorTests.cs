@@ -1,9 +1,9 @@
-﻿using SuperLocker.Api.Models;
+﻿using System;
+using SuperLocker.Api.Models;
 using SuperLocker.Api.Validators;
-using System;
 using Xunit;
 
-namespace SuperLocker.Api.Tests.Validators
+namespace SuperLocker.Unit.Tests.SuperLocker.Api.Validators
 {
     public class UnlockRequestValidatorTests
     {
@@ -13,15 +13,12 @@ namespace SuperLocker.Api.Tests.Validators
         public void UnlockCommandShouldNotAcceptAnyEmptyUserOrLock(Guid lockId, bool isValid, string invalidProperyName)
         {
             var unlockValidator = new UnlockRequestValidator();
-            var command = new UnlockRequest { LockId = lockId };
+            var command = new UnlockRequest {LockId = lockId};
 
             var validationResult = unlockValidator.Validate(command);
 
             Assert.Equal(isValid, validationResult.IsValid);
-            if (!isValid)
-            {
-                Assert.Contains(validationResult.Errors, o => o.PropertyName == invalidProperyName);
-            }
+            if (!isValid) Assert.Contains(validationResult.Errors, o => o.PropertyName == invalidProperyName);
         }
     }
 }

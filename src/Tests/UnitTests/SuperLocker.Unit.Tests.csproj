@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SuperLocker.Api\SuperLocker.Api.csproj" />
-    <ProjectReference Include="..\..\SuperLocker.Core\SuperLocker.Core.csproj" />
+    <ProjectReference Include="..\..\SuperLocker.Domain\SuperLocker.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperLocker.Crosscuts\SuperLocker.Crosscuts.csproj" />
+    <ProjectReference Include="..\SuperLocker.Shared\SuperLocker.Shared.csproj" />
   </ItemGroup>
 
 </Project>

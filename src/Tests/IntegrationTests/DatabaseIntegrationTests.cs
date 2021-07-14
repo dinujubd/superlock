@@ -1,7 +1,7 @@
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MySql.Data.MySqlClient;
 using ThrowawayDb.MySql;
 using Xunit;
 
@@ -27,7 +27,7 @@ namespace SuperLocker.Intgration.Tests
         {
             var expectedTables = new List<string>
             {
-                "Roles","Users","UserUnlockActivity","UserRoles","UserLocks","Locks"
+                "Roles", "Users", "UserUnlockActivity", "UserRoles", "UserLocks", "Locks"
             };
 
             using var database = ThrowawayDatabase.Create("Server = localhost; Uid = root; Pwd = rpass");
@@ -39,15 +39,13 @@ namespace SuperLocker.Intgration.Tests
 
             connection.ExecuteNonQuery(sqlQuery);
 
-            var reader = connection.ExecuteReader($"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='{database.Name}'");
+            var reader = connection.ExecuteReader(
+                $"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='{database.Name}'");
 
             var tables = new List<string>();
 
 
-            while (reader.Read())
-            {
-                tables.Add(reader[0].ToString());
-            }
+            while (reader.Read()) tables.Add(reader[0].ToString());
 
             expectedTables.Sort();
             tables.Sort();

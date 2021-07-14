@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using SuperLocker.Api.Models;
-using System;
 
 namespace SuperLocker.Api.Validators
 {
@@ -10,6 +10,5 @@ namespace SuperLocker.Api.Validators
         {
             RuleFor(x => x.LockId).NotEqual(Guid.Empty);
         }
-
     }
 }
