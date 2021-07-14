@@ -26,7 +26,7 @@ namespace SuperLocker.Api.Controllers
         {
             try
             {
-                await _bus.Publish(new UnlockCommand(request.LockId, _user.UserId));
+                await _bus.Send(new UnlockCommand(request.LockId, _user.UserId));
                 return Ok();
             }
             catch
