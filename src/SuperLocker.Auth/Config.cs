@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using IdentityModel;
 using IdentityServer4.Models;
-using System.Collections.Generic;
 
 namespace SuperLocker.Auth
 {
@@ -9,13 +9,13 @@ namespace SuperLocker.Auth
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("super_lock_api", "My API")
+                new("super_lock_api", "My API")
             };
 
         public static IEnumerable<Client> Clients =>
             new List<Client>
             {
-                new Client
+                new()
                 {
                     ClientId = "client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
@@ -23,12 +23,13 @@ namespace SuperLocker.Auth
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "super_lock_api", "openid", "profile", "email"},
+                    AllowedScopes = {"super_lock_api", "openid", "profile", "email"}
                 }
             };
 
         public static IEnumerable<IdentityResource> Resouces =>
-            new List<IdentityResource> {
+            new List<IdentityResource>
+            {
                 new IdentityResources.OpenId(),
                 new ProfileWithRoleIdentityResource(),
                 new IdentityResources.Email()
@@ -40,7 +41,7 @@ namespace SuperLocker.Auth
     {
         public ProfileWithRoleIdentityResource()
         {
-            this.UserClaims.Add(JwtClaimTypes.Role);
+            UserClaims.Add(JwtClaimTypes.Role);
         }
     }
 }

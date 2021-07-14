@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RestSharp;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -11,22 +10,21 @@ namespace SuperLocker.Functional.Tests.Steps
     [Binding]
     public class ApplicationUsersRequireATokenToMakeRequestsSteps
     {
-
+        private readonly Dictionary<string, bool> resultTable;
         private Table givenCredentials;
-        private Dictionary<string, bool> resultTable;
 
         public ApplicationUsersRequireATokenToMakeRequestsSteps()
         {
             resultTable = new Dictionary<string, bool>();
         }
-        
+
 
         [Given(@"following 2 users having")]
         public void GivenFollowingUsersHaving(Table table)
         {
-            this.givenCredentials = table;
+            givenCredentials = table;
         }
-        
+
         [When(@"they request for token")]
         public async Task WhenTheyRequestForToken()
         {
@@ -40,7 +38,6 @@ namespace SuperLocker.Functional.Tests.Steps
         }
 
 
-
         [Then(@"the token result should be")]
         public void ThenTheTokenResutlShouldBe(Table table)
         {
@@ -48,8 +45,9 @@ namespace SuperLocker.Functional.Tests.Steps
             {
                 var userName = row[0];
                 var isValid = row[1];
-                Assert.True(resultTable[userName].ToString().Equals(isValid, System.StringComparison.InvariantCultureIgnoreCase));
-            } 
+                Assert.True(resultTable[userName].ToString()
+                    .Equals(isValid, StringComparison.InvariantCultureIgnoreCase));
+            }
         }
 
 
@@ -71,7 +69,7 @@ namespace SuperLocker.Functional.Tests.Steps
             request.AddParameter("username", userName);
             request.AddParameter("password", password);
             var response = await client.ExecuteAsync(request);
-           
+
 
             return response.IsSuccessful && response.Content.Contains("access_token");
         }

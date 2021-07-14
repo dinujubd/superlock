@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\SuperLocker.Core\SuperLocker.Core.csproj" />
+    <ProjectReference Include="..\SuperLocker.Application\SuperLocker.Application.csproj" />
+    <ProjectReference Include="..\SuperLocker.Domain\SuperLocker.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

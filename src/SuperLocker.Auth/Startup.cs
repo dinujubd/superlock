@@ -3,7 +3,7 @@ using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SuperLocker.Crosscuts;
+using SuperLocker.Shared;
 
 namespace SuperLocker.Auth
 {
@@ -29,7 +29,6 @@ namespace SuperLocker.Auth
             builder.AddDeveloperSigningCredential();
 
             services.Configure<DatabaseConfigurations>(Configuration.GetSection(DatabaseConfigurations.Database));
-
         }
 
         public void Configure(IApplicationBuilder app)

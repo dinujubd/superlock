@@ -1,9 +1,9 @@
+using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SuperLocker.Api.Models;
-using SuperLocker.Core.Command;
-using System.Threading.Tasks;
+using SuperLocker.Application.Commands;
 
 namespace SuperLocker.Api.Controllers
 {
@@ -26,15 +26,13 @@ namespace SuperLocker.Api.Controllers
         {
             try
             {
-                await _bus.Send(new UnlockCommand(request.LockId, _user.UserId));
+                await _bus.Publish(new UnlockCommand(request.LockId, _user.UserId));
                 return Ok();
             }
             catch
             {
                 return BadRequest();
-            }   
+            }
         }
-
     }
-
 }

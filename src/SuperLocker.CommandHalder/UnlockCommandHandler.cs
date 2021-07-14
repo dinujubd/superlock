@@ -1,12 +1,12 @@
+using System;
+using System.Threading.Tasks;
 using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
-using SuperLocker.Core;
-using SuperLocker.Core.Command;
-using SuperLocker.Core.Repositories;
-using System;
-using System.Threading.Tasks;
+using SuperLocker.Application;
+using SuperLocker.Application.Commands;
+using SuperLocker.Domain.Entities.Aggregates.Lock.Repository;
 
 namespace SuperLocker.CommandHandler
 {
@@ -14,18 +14,21 @@ namespace SuperLocker.CommandHandler
     {
         private readonly ILockRepository _lockRepository;
         private readonly ILogger<UnlockCommand> _logger;
-        private readonly IValidator<UnlockCommand> _valdator;
-        public UnlockCommandHandler(ILockRepository lockRepository, IValidator<UnlockCommand> valdator, ILogger<UnlockCommand> logger)
+        private readonly IValidator<UnlockCommand> _validator;
+
+        public UnlockCommandHandler(ILockRepository lockRepository, IValidator<UnlockCommand> validator,
+            ILogger<UnlockCommand> logger)
         {
-            _valdator = valdator;
+            _validator = validator;
             _lockRepository = lockRepository;
             _logger = logger;
         }
+
         public async Task Consume(ConsumeContext<UnlockCommand> context)
         {
             try
             {
-                var validationResult = await _valdator.ValidateAsync(context.Message);
+                var validationResult = await _validator.ValidateAsync(context.Message);
                 if (!validationResult.IsValid)
                 {
                     validationResult.Errors.ForEach(x =>
@@ -35,9 +38,10 @@ namespace SuperLocker.CommandHandler
                 }
                 else
                 {
-                    await _lockRepository.Unlock(context.Message);
+                    await _lockRepository.Unlock(context.Message.UserId, context.Message.LockId);
 
-                    _logger.LogInformation("UNLOCKED.SUCCESS lockId: {0}, userId: {1} ->", context.Message.LockId, context.Message.UserId);
+                    _logger.LogInformation("UNLOCKED.SUCCESS lockId: {0}, userId: {1} ->", context.Message.LockId,
+                        context.Message.UserId);
                 }
             }
             catch (MySqlException dbExcpetion)
@@ -49,7 +53,6 @@ namespace SuperLocker.CommandHandler
                 _logger.LogError(e, "UNLOCKED.FAILED.EXCEPTION");
                 throw;
             }
-
         }
     }
 }

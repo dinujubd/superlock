@@ -1,4 +1,8 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dapper;
+using FluentValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -10,21 +14,21 @@ using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Newtonsoft;
 using SuperLocker.Api.Models;
 using SuperLocker.Api.Validators;
+using SuperLocker.Application;
+using SuperLocker.Application.Commands;
+using SuperLocker.Application.Queries;
+using SuperLocker.Application.Validators.Commands;
+using SuperLocker.Application.Validators.Queries;
 using SuperLocker.CommandHandler;
-using SuperLocker.Core;
-using SuperLocker.Core.Command;
-using SuperLocker.Core.Query;
-using SuperLocker.Core.Repositories;
-using SuperLocker.Core.Validators.Command;
-using SuperLocker.Core.Validators.Queries;
-using SuperLocker.Crosscuts;
-using SuperLocker.DataContext.Adapters;
-using SuperLocker.DataContext.Providers;
-using SuperLocker.DataContext.Proxies;
-using SuperLocker.DataContext.Repositories;
+using SuperLocker.Domain.Entities.Aggregates.Lock.Repository;
+using SuperLocker.Domain.Entities.Aggregates.User;
+using SuperLocker.Domain.Entities.Aggregates.User.Repository;
+using SuperLocker.Infrastructure.Adapters;
+using SuperLocker.Infrastructure.Providers;
+using SuperLocker.Infrastructure.Proxies;
+using SuperLocker.Infrastructure.Repositories;
 using SuperLocker.QueryHandler;
-using System;
-using System.Linq;
+using SuperLocker.Shared;
 
 namespace SuperLocker.Api.Extensions
 {
@@ -32,7 +36,9 @@ namespace SuperLocker.Api.Extensions
     {
         public static void RegisterQueryHandlers(this IServiceCollection services)
         {
-            services.AddScoped<IQueryHandler<UnlockActivityQuery, UnlockQueryRespose>, UnlockActivityQueryHandler>();
+            services
+                .AddScoped<IQueryHandler<UnlockActivityQuery, IList<UserUnlockActivities>>,
+                    UnlockActivityQueryHandler>();
         }
 
         public static void RegisterServieBus(this IServiceCollection services, IConfiguration configuration)
@@ -54,21 +60,21 @@ namespace SuperLocker.Api.Extensions
         public static void RegisterAuthorizationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer("Bearer", options =>
-            {
-                var service = configuration.GetSection(ServiceConfigurations.Services).Get<ServiceConfigurations>();
-                options.Authority = service.Auth;
-
-                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateAudience = false
-                };
-            });
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer("Bearer", options =>
+                {
+                    var service = configuration.GetSection(ServiceConfigurations.Services).Get<ServiceConfigurations>();
+                    options.Authority = service.Auth;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
 
 
             services.AddAuthorization(options =>
@@ -80,10 +86,7 @@ namespace SuperLocker.Api.Extensions
                 });
             });
 
-            services.AddSingleton(context =>
-            {
-                return MapAppUserFromContext(context);
-            });
+            services.AddSingleton(context => { return MapAppUserFromContext(context); });
         }
 
         public static void RegisterDatabases(this IServiceCollection services, IConfiguration configuration)
@@ -97,11 +100,14 @@ namespace SuperLocker.Api.Extensions
             });
             services.AddScoped<ICacheProxy, RedisMySqlCacheProxy>();
             services.AddScoped<ICacheAdapter, RedisCacheAdapter>();
-            services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>((options) =>
+            services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(options =>
             {
                 return configuration.GetSection("Redis").Get<RedisConfiguration>();
             });
 
+            SqlMapper.AddTypeHandler(new MySqlGuidMapper());
+            SqlMapper.RemoveTypeMap(typeof(Guid));
+            SqlMapper.RemoveTypeMap(typeof(Guid?));
         }
 
         public static void RegisterRepositoris(this IServiceCollection services)
@@ -132,12 +138,12 @@ namespace SuperLocker.Api.Extensions
             var firstName = identityClaims.FirstOrDefault(x => x.Type == "firstName")?.Value;
             var lastName = identityClaims.FirstOrDefault(x => x.Type == "lastName")?.Value;
 
-            var userInfo = new AppUser()
+            var userInfo = new AppUser
             {
                 UserId = Guid.Parse(userId),
                 UserName = userName,
                 FirstName = firstName,
-                LastName = lastName,
+                LastName = lastName
             };
 
             return userInfo;

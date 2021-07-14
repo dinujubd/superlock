@@ -31,9 +31,10 @@ namespace SuperLocker.Api
             services.RegisterServieBus(Configuration);
             services.RegisterQueryHandlers();
 
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperLocker.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "SuperLocker.Api", Version = "v1"});
             });
         }
 
@@ -54,11 +55,7 @@ namespace SuperLocker.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
-
 }
