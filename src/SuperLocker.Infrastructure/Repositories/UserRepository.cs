@@ -39,7 +39,8 @@ namespace SuperLocker.Infrastructure.Repositories
         {
             return await _cacheAdapter.QueryWithCache($"get_user_{userId}", async () =>
             {
-                const string userInfo = "SELECT UserId as Id, FirstName, LastName, UserName, PhoneNo, IsActive from Users where UserId = @UserId And IsActive=1 LIMIT 1";
+                const string userInfo =
+                    "SELECT UserId as Id, FirstName, LastName, UserName, PhoneNo, IsActive from Users where UserId = @UserId And IsActive=1 LIMIT 1";
                 return await _conn.QueryFirstOrDefaultAsync<User>(userInfo, new {UserId = userId.ToString()});
             });
         }

@@ -104,7 +104,7 @@ namespace SuperLocker.Api.Extensions
             {
                 return configuration.GetSection("Redis").Get<RedisConfiguration>();
             });
-            
+
             SqlMapper.AddTypeHandler(new MySqlGuidMapper());
             SqlMapper.RemoveTypeMap(typeof(Guid));
             SqlMapper.RemoveTypeMap(typeof(Guid?));

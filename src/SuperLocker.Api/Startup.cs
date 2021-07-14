@@ -1,5 +1,3 @@
-using System;
-using Dapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SuperLocker.Api.Extensions;
-using SuperLocker.Infrastructure.Adapters;
 
 namespace SuperLocker.Api
 {
@@ -33,8 +30,7 @@ namespace SuperLocker.Api
             services.RegisterAuthorizationServices(Configuration);
             services.RegisterServieBus(Configuration);
             services.RegisterQueryHandlers();
-            
-           
+
 
             services.AddSwaggerGen(c =>
             {

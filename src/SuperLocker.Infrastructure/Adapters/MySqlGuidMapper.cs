@@ -13,7 +13,7 @@ namespace SuperLocker.Infrastructure.Adapters
 
         public override Guid Parse(object value)
         {
-            return new Guid((string)value);
+            return new((string) value);
         }
     }
 }
