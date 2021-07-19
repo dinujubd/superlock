@@ -51,6 +51,7 @@ namespace SuperLocker.Api.Extensions
                 {
                     cfg.Host(rabbitmqConfig.ConnectionString);
                     cfg.ConfigureEndpoints(context);
+                    EndpointConvention.Map<UnlockCommand>(new Uri("queue:UnlockCommandHandler"));
                 });
             });
 
